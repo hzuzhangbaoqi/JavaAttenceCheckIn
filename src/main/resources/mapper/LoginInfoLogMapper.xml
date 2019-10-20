@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.attencecheckin.javabackend.dao.LoginInfoLogMapper" >
+  <resultMap id="BaseResultMap" type="com.attencecheckin.javabackend.entity.LoginInfoLog" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="loginId" property="loginid" jdbcType="INTEGER" />
+    <result column="loginUserType" property="loginusertype" jdbcType="INTEGER" />
+    <result column="loginTime" property="logintime" jdbcType="TIMESTAMP" />
+    <result column="ip" property="ip" jdbcType="VARCHAR" />
+    <result column="local" property="local" jdbcType="VARCHAR" />
+    <result column="macAddress" property="macaddress" jdbcType="VARCHAR" />
+    <result column="macName" property="macname" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, loginId, loginUserType, loginTime, ip, local, macAddress, macName
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.attencecheckin.javabackend.entity.LoginInfoLogExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from logininfolog
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from logininfolog
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from logininfolog
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.attencecheckin.javabackend.entity.LoginInfoLogExample" >
+    delete from logininfolog
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.attencecheckin.javabackend.entity.LoginInfoLog" >
+    insert into logininfolog (id, loginId, loginUserType, 
+      loginTime, ip, local, 
+      macAddress, macName)
+    values (#{id,jdbcType=INTEGER}, #{loginid,jdbcType=INTEGER}, #{loginusertype,jdbcType=INTEGER}, 
+      #{logintime,jdbcType=TIMESTAMP}, #{ip,jdbcType=VARCHAR}, #{local,jdbcType=VARCHAR}, 
+      #{macaddress,jdbcType=VARCHAR}, #{macname,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.attencecheckin.javabackend.entity.LoginInfoLog" >
+    insert into logininfolog
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="loginid != null" >
+        loginId,
+      </if>
+      <if test="loginusertype != null" >
+        loginUserType,
+      </if>
+      <if test="logintime != null" >
+        loginTime,
+      </if>
+      <if test="ip != null" >
+        ip,
+      </if>
+      <if test="local != null" >
+        local,
+      </if>
+      <if test="macaddress != null" >
+        macAddress,
+      </if>
+      <if test="macname != null" >
+        macName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="loginid != null" >
+        #{loginid,jdbcType=INTEGER},
+      </if>
+      <if test="loginusertype != null" >
+        #{loginusertype,jdbcType=INTEGER},
+      </if>
+      <if test="logintime != null" >
+        #{logintime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ip != null" >
+        #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="local != null" >
+        #{local,jdbcType=VARCHAR},
+      </if>
+      <if test="macaddress != null" >
+        #{macaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="macname != null" >
+        #{macname,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.attencecheckin.javabackend.entity.LoginInfoLogExample" resultType="java.lang.Integer" >
+    select count(*) from logininfolog
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update logininfolog
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.loginid != null" >
+        loginId = #{record.loginid,jdbcType=INTEGER},
+      </if>
+      <if test="record.loginusertype != null" >
+        loginUserType = #{record.loginusertype,jdbcType=INTEGER},
+      </if>
+      <if test="record.logintime != null" >
+        loginTime = #{record.logintime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.ip != null" >
+        ip = #{record.ip,jdbcType=VARCHAR},
+      </if>
+      <if test="record.local != null" >
+        local = #{record.local,jdbcType=VARCHAR},
+      </if>
+      <if test="record.macaddress != null" >
+        macAddress = #{record.macaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.macname != null" >
+        macName = #{record.macname,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update logininfolog
+    set id = #{record.id,jdbcType=INTEGER},
+      loginId = #{record.loginid,jdbcType=INTEGER},
+      loginUserType = #{record.loginusertype,jdbcType=INTEGER},
+      loginTime = #{record.logintime,jdbcType=TIMESTAMP},
+      ip = #{record.ip,jdbcType=VARCHAR},
+      local = #{record.local,jdbcType=VARCHAR},
+      macAddress = #{record.macaddress,jdbcType=VARCHAR},
+      macName = #{record.macname,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.attencecheckin.javabackend.entity.LoginInfoLog" >
+    update logininfolog
+    <set >
+      <if test="loginid != null" >
+        loginId = #{loginid,jdbcType=INTEGER},
+      </if>
+      <if test="loginusertype != null" >
+        loginUserType = #{loginusertype,jdbcType=INTEGER},
+      </if>
+      <if test="logintime != null" >
+        loginTime = #{logintime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ip != null" >
+        ip = #{ip,jdbcType=VARCHAR},
+      </if>
+      <if test="local != null" >
+        local = #{local,jdbcType=VARCHAR},
+      </if>
+      <if test="macaddress != null" >
+        macAddress = #{macaddress,jdbcType=VARCHAR},
+      </if>
+      <if test="macname != null" >
+        macName = #{macname,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.attencecheckin.javabackend.entity.LoginInfoLog" >
+    update logininfolog
+    set loginId = #{loginid,jdbcType=INTEGER},
+      loginUserType = #{loginusertype,jdbcType=INTEGER},
+      loginTime = #{logintime,jdbcType=TIMESTAMP},
+      ip = #{ip,jdbcType=VARCHAR},
+      local = #{local,jdbcType=VARCHAR},
+      macAddress = #{macaddress,jdbcType=VARCHAR},
+      macName = #{macname,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,59 @@
+# 开发环境配置文件
+server:
+  port : 8887
+aliyun:
+  oss:
+    endpoint : oss-ap-northeast-1.aliyuncs.com
+    accessKeyId : LTAIpwk5gGlauftY
+    accessKeySecret : DK5VCpdMaucAxGKqgKQuC56d5sPUpy
+wx:
+  miniapp:
+    appid: wx912b4892df489dba
+    configs:
+        - appid: wx912b4892df489dba #微信小程序的appid
+          secret: 97b68f317b1f73b3ce0aa30666559b27 #微信小程序的Secret
+          token: #微信小程序消息服务器配置的token
+          aesKey: #微信小程序消息服务器配置的EncodingAESKey
+          msgDataFormat: JSON
+spring:
+    datasource:
+        name: test
+        url: jdbc:mysql://118.89.188.137:3306/attencecheck?useSSL=false&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&autoReconnect=true&failOverReadOnly=false&serverTimezone=UTC
+        username: root
+        password: Admin123!
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        filters: stat
+        maxActive: 20
+        initialSize: 1
+        maxWait: 60000
+        minIdle: 1
+        timeBetweenEvictionRunsMillis: 60000
+        minEvictableIdleTimeMillis: 300000
+        validationQuery: select 'x'
+        testWhileIdle: true
+        testOnBorrow: false
+        testOnReturn: false
+        poolPreparedStatements: true
+        maxOpenPreparedStatements: 20
+    jpa:
+      hibernate:
+        ddl-auto: update
+      show-sql: true
+# 打印sql
+logging:
+  config: classpath:logback.xml
+  level:
+     com.attencecheckin.forumcrawl.dao : trace
+## 该配置节点为独立的节点，有很多同学容易将这个配置放在spring的节点下，导致配置无法被识别
+mybatis:
+  mapper-locations: classpath:mapper/*.xml  #注意：一定要对应mapper映射xml文件的所在路径
+  type-aliases-package: com.attencecheckin.javabackend.entity  # 注意：对应实体类的路径
+  # configuration: map-underscore-to-camel-case: true # 驼峰命名规范
+
+#pagehelper分页插件
+pagehelper:
+    helperDialect: mysql
+    reasonable: true
+    supportMethodsArguments: true
+    params: count=countSql
+    page-size-zero: true
