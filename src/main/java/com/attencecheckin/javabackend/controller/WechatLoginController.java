@@ -109,11 +109,6 @@ public class WechatLoginController {
 
     @PostMapping("/teacherLogin")
     @ApiOperation(value = "教师微信登录", notes = "教师微信登录小程序进行登录调用的接口，进行读者账号和微信openid绑定操作", httpMethod = "POST")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "用户ID", required = false, dataType = "Integer"),
-            @ApiImplicitParam(name = "passWord", value = "用户密码", required = false, dataType = "String"),
-            @ApiImplicitParam(name = "jscode", value = "jscode", required = true, dataType = "String")
-    })
     public JsonResult<Student> wechatTeacherLogin(@RequestParam@ApiParam(name = "id", value = "用户ID", required = false)Integer id,
                                                   @RequestParam@ApiParam(name = "passWord", value = "用户密码", required = false) String passWord,
                                                   @RequestParam@ApiParam(name = "jscode", value = "jscode", required = false) String jscode) {
