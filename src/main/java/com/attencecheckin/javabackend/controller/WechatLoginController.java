@@ -9,10 +9,7 @@ import com.attencecheckin.javabackend.entity.Student;
 import com.attencecheckin.javabackend.entity.Teacher;
 import com.attencecheckin.javabackend.service.StudentService;
 import com.attencecheckin.javabackend.service.TeacherService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import me.chanjar.weixin.common.error.WxErrorException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -74,14 +71,9 @@ public class WechatLoginController {
 
     @PostMapping("/studentLogin")
     @ApiOperation(value = "学生微信登录", notes = "学生微信登录,小程序进行登录调用的接口，进行读者账号和微信openid绑定操作", httpMethod = "POST")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "用户ID", required = false, dataType = "Integer"),
-            @ApiImplicitParam(name = "passWord", value = "用户密码", required = false, dataType = "String"),
-            @ApiImplicitParam(name = "jscode", value = "jscode", required = true, dataType = "String")
-    })
-    public JsonResult<Student> wechatStudentLogin(@RequestParam(value = "id", required = false) Integer id,
-                                                  @RequestParam(value = "passWord", required = false) String passWord,
-                                                  @RequestParam(value = "jscode", required = false) String jscode) {
+    public JsonResult<Student> wechatStudentLogin(@RequestParam @ApiParam(name = "id", value = "用户ID", required = false)Integer id,
+                                                  @RequestParam @ApiParam(name = "passWord", value = "用户密码", required = false) String passWord,
+                                                  @RequestParam@ApiParam(name = "jscode", value = "jscode", required = false) String jscode) {
 
         final WxMaService wxService = WxMaConfiguration.getMaService(appid);
         Student student = studentService.get(id);
@@ -122,9 +114,9 @@ public class WechatLoginController {
             @ApiImplicitParam(name = "passWord", value = "用户密码", required = false, dataType = "String"),
             @ApiImplicitParam(name = "jscode", value = "jscode", required = true, dataType = "String")
     })
-    public JsonResult<Student> wechatTeacherLogin(@RequestParam(value = "id", required = false) Integer id,
-                                                  @RequestParam(value = "passWord", required = false) String passWord,
-                                                  @RequestParam(value = "jscode", required = false) String jscode) {
+    public JsonResult<Student> wechatTeacherLogin(@RequestParam@ApiParam(name = "id", value = "用户ID", required = false)Integer id,
+                                                  @RequestParam@ApiParam(name = "passWord", value = "用户密码", required = false) String passWord,
+                                                  @RequestParam@ApiParam(name = "jscode", value = "jscode", required = false) String jscode) {
 
         final WxMaService wxService = WxMaConfiguration.getMaService(appid);
 

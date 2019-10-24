@@ -42,14 +42,9 @@ public class LoginController {
 
     @PostMapping("/wechat/studentRegister")
     @ApiOperation(value = "微信登录", notes = "小程序进行登录调用的接口，进行读者账号和微信openid绑定操作", httpMethod = "POST")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "id", value = "用户ID", required = false, dataType = "Integer"),
-            @ApiImplicitParam(name = "passWord", value = "用户密码", required = false, dataType = "String"),
-            @ApiImplicitParam(name = "jscode", value = "jscode", required = true, dataType = "String")
-    })
-    public JsonResult<Student> wechatStudentLogin(@RequestParam(value = "id", required = false) Integer id,
-                                                  @RequestParam(value = "passWord", required = false) String passWord,
-                                                  @RequestParam(value = "jscode", required = false) String jscode) {
+    public JsonResult<Student> wechatStudentLogin(@RequestParam @ApiParam(name = "id", value = "用户ID", required = false)Integer id,
+                                                  @RequestParam@ApiParam(name = "passWord", value = "用户密码", required = false) String passWord,
+                                                  @RequestParam@ApiParam(name = "jscode", value = "jscode", required = false) String jscode) {
 
         final WxMaService wxService = WxMaConfiguration.getMaService(appid);
         Student student = studentService.get(id);
@@ -176,7 +171,7 @@ public class LoginController {
 
     @PostMapping(produces = "application/xml; charset=UTF-8")
     public String post(@PathVariable String appid,
-                       @RequestBody String requestBody,
+                        String requestBody,
                        @RequestParam(name = "msg_signature", required = false) String msgSignature,
                        @RequestParam(name = "encrypt_type", required = false) String encryptType,
                        @RequestParam(name = "signature", required = false) String signature,

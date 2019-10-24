@@ -7,10 +7,7 @@ import com.attencecheckin.javabackend.entity.Teacher;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.attencecheckin.javabackend.service.TeacherService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -31,29 +28,20 @@ public class TeacherController {
 
     @PostMapping("/insert")
     @ApiOperation(value = "insert", notes = "增加一条数据", httpMethod = "POST")
-    @ApiImplicitParams({
-                @ApiImplicitParam(name = "Teacher", value = "实体", required = true, dataType = "Teacher")
-        })
-    public JsonResult<Integer> insert(@RequestBody Teacher teacher) throws Exception{
+    public JsonResult<Integer> insert( Teacher teacher) throws Exception{
 
         teacherService.save(teacher);
         return new JsonResult<Integer>(1);
     }
     @PostMapping("/deleteById")
     @ApiOperation(value = "deleteById", notes = "根据id删除数据", httpMethod = "POST")
-    @ApiImplicitParams({
-                @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Integer")
-        })
-    public JsonResult<Integer> deleteById(@RequestParam Integer id) throws Exception {
+    public JsonResult<Integer> deleteById(@RequestParam @ApiParam(name = "id", value = "主键", required = true)Integer id) throws Exception {
         Integer state = teacherService.del(id);
         return new JsonResult<Integer>(state);
     }
 
     @PostMapping("/update")
     @ApiOperation(value = "update", notes = "更新数据", httpMethod = "POST")
-    @ApiImplicitParams({
-                @ApiImplicitParam(name = "Teacher", value = "实体", required = true, dataType = "Teacher")
-        })
     public JsonResult<Integer> update(Teacher teacher) throws Exception {
         Integer state = teacherService.update(teacher);
         return new JsonResult<Integer>(state);
@@ -61,10 +49,7 @@ public class TeacherController {
 
     @PostMapping("/selectById")
     @ApiOperation(value = "selectById", notes = "更加id查询", httpMethod = "POST")
-    @ApiImplicitParams({
-                @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Integer")
-        })
-    public JsonResult<Teacher> selectById(@RequestParam Integer id) throws Exception {
+    public JsonResult<Teacher> selectById(@RequestParam@ApiParam(name = "id", value = "主键", required = true) Integer id) throws Exception {
         Teacher teacher = teacherService.get(id);
         return new JsonResult<Teacher>(teacher);
     }
@@ -77,12 +62,8 @@ public class TeacherController {
      */
     @PostMapping("/list")
     @ApiOperation(value = "list", notes = "批量查询", httpMethod = "POST")
-    @ApiImplicitParams({
-                @ApiImplicitParam(name = "page", value = "页数", required = true, dataType = "Integer"),
-                @ApiImplicitParam(name = "size", value = "行数", required = true, dataType = "Integer")
-        })
-    public JsonResult<PageInfo<Teacher>> list(@RequestParam(defaultValue = "0") Integer page,
-               @RequestParam(defaultValue = "0") Integer size) throws Exception {
+    public JsonResult<PageInfo<Teacher>> list(@RequestParam(defaultValue = "0")@ApiParam(name = "page", value = "页数", required = true) Integer page,
+                                              @RequestParam(defaultValue = "0")@ApiParam(name = "size", value = "行数", required = true) Integer size) throws Exception {
         PageHelper.startPage(page, size);
         List<Teacher> list = teacherService.getAllList();
         PageInfo<Teacher> pageInfo = new PageInfo<Teacher>(list);

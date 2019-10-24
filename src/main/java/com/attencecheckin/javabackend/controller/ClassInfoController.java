@@ -6,10 +6,7 @@ import com.attencecheckin.javabackend.common.JsonResult;
 import com.attencecheckin.javabackend.entity.ClassInfo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -30,29 +27,20 @@ public class ClassInfoController {
 
     @PostMapping("/insert")
     @ApiOperation(value = "insert", notes = "增加一条数据", httpMethod = "POST")
-    @ApiImplicitParams({
-                @ApiImplicitParam(name = "ClassInfo", value = "实体", required = true, dataType = "ClassInfo")
-        })
-    public JsonResult<Integer> insert(@RequestBody ClassInfo classinfo) throws Exception{
+    public JsonResult<Integer> insert(ClassInfo classinfo) throws Exception{
       /*classinfo.setId(ApplicationUtils.getUUID());*/
        classinfoService.save(classinfo);
         return new JsonResult<Integer>(1);
     }
     @PostMapping("/deleteById")
     @ApiOperation(value = "deleteById", notes = "根据id删除数据", httpMethod = "POST")
-    @ApiImplicitParams({
-                @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Integer")
-        })
-    public JsonResult<Integer> deleteById(@RequestParam Integer id) throws Exception {
+    public JsonResult<Integer> deleteById(@RequestParam @ApiParam(name = "id", value = "id", required = true) Integer id) throws Exception {
         Integer state = classinfoService.del(id);
         return new JsonResult<Integer>(state);
     }
 
     @PostMapping("/update")
     @ApiOperation(value = "update", notes = "更新数据", httpMethod = "POST")
-    @ApiImplicitParams({
-                @ApiImplicitParam(name = "ClassInfo", value = "实体", required = true, dataType = "ClassInfo")
-        })
     public JsonResult<Integer> update(ClassInfo classinfo) throws Exception {
         Integer state = classinfoService.update(classinfo);
         return new JsonResult<Integer>(state);
@@ -60,10 +48,7 @@ public class ClassInfoController {
 
     @PostMapping("/selectById")
     @ApiOperation(value = "selectById", notes = "更加id查询", httpMethod = "POST")
-    @ApiImplicitParams({
-                @ApiImplicitParam(name = "id", value = "id", required = true, dataType = "Integer")
-        })
-    public JsonResult<ClassInfo> selectById(@RequestParam Integer id) throws Exception {
+    public JsonResult<ClassInfo> selectById(@RequestParam @ApiParam(name = "id", value = "id", required = true) Integer id) throws Exception {
         ClassInfo classinfo = classinfoService.get(id);
         return new JsonResult<ClassInfo>(classinfo);
     }
@@ -76,12 +61,8 @@ public class ClassInfoController {
      */
     @PostMapping("/list")
     @ApiOperation(value = "list", notes = "批量查询", httpMethod = "POST")
-    @ApiImplicitParams({
-                @ApiImplicitParam(name = "page", value = "页数", required = true, dataType = "Integer"),
-                @ApiImplicitParam(name = "size", value = "行数", required = true, dataType = "Integer")
-        })
-    public JsonResult<PageInfo<ClassInfo>> list(@RequestParam(defaultValue = "0") Integer page,
-               @RequestParam(defaultValue = "0") Integer size) throws Exception {
+    public JsonResult<PageInfo<ClassInfo>> list(@RequestParam(defaultValue = "0")@ApiParam(name = "page", value = "页数", required = true) Integer page,
+               @RequestParam(defaultValue = "0")@ApiParam(name = "size", value = "行数", required = true) Integer size) throws Exception {
         PageHelper.startPage(page, size);
         List<ClassInfo> list = classinfoService.getAllList();
         PageInfo<ClassInfo> pageInfo = new PageInfo<ClassInfo>(list);

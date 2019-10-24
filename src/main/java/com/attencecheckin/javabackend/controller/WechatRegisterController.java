@@ -42,10 +42,7 @@ public class WechatRegisterController {
 
     @PostMapping("/wechat/student")
     @ApiOperation(value = "学生注册", notes = "小程序进行注册登录调用的接口，进行读者账号和微信openid绑定操作", httpMethod = "POST")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "student", value = "学生实体", required = false, dataType = "Student")
-    })
-    public JsonResult<Student> wechatStudentLogin(@RequestBody Student student) {
+    public JsonResult<Student> wechatStudentLogin( Student student) {
 
         if (studentService.existById(student.getId())) return new JsonResult(ResultEnum.NOT_DATA.val(), "学生账号存在");
         if (StringUtils.isBlank(student.getPassword())) {
@@ -61,10 +58,7 @@ public class WechatRegisterController {
     }
     @PostMapping("/wechat/teacher")
     @ApiOperation(value = "教师注册", notes = "小程序进行注册登录调用的接口，进行读者账号和微信openid绑定操作", httpMethod = "POST")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "teacher", value = "教师", required = false, dataType = "Teacher")
-    })
-    public JsonResult<Student> wechatStudentLogin(@RequestBody Teacher teacher) {
+    public JsonResult<Student> wechatStudentLogin( Teacher teacher) {
 
         if (teacherService.existById(teacher.getId())) return new JsonResult(ResultEnum.NOT_DATA.val(), "教师账号存在");
         if (StringUtils.isBlank(teacher.getPassword())) {
