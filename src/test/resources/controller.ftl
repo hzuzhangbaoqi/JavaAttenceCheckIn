@@ -33,7 +33,7 @@ public class ${modelNameUpperCamel}Controller {
     @ApiImplicitParams({
                 @ApiImplicitParam(name = "${modelNameUpperCamel}", value = "实体", required = true, dataType = "${modelNameUpperCamel}")
         })
-    public JsonResult<Integer> insert(@RequestBody ${modelNameUpperCamel} ${modelNameLowerCamel}) throws Exception{
+    public JsonResult<Integer> insert(${modelNameUpperCamel} ${modelNameLowerCamel}) throws Exception{
       /*${modelNameLowerCamel}.setId(ApplicationUtils.getUUID());*/
        ${modelNameLowerCamel}Service.save(${modelNameLowerCamel});
         return new JsonResult<Integer>(1);

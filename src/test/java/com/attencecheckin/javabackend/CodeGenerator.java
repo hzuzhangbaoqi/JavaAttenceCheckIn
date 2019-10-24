@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 
-public class CodeGenerator {
+    public class CodeGenerator {
     // JDBC配置，请修改为你项目的实际配置
     private static final String JDBC_URL = "jdbc:mysql://118.89.188.137:3306/attencecheck?useSSL=false&useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&autoReconnect=true&failOverReadOnly=false&serverTimezone=UTC";
     private static final String JDBC_USERNAME = "root";
