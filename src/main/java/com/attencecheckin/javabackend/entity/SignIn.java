@@ -1,6 +1,7 @@
 package com.attencecheckin.javabackend.entity;
 
 import com.attencecheckin.javabackend.common.arg.BaseArg;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -13,7 +14,8 @@ public class SignIn implements BaseArg {
     private Integer id;
     @ApiModelProperty(value = "签到学生ID", name="studentid", dataType="Integer", required=false, hidden=false)
     private Integer studentid;
-    @ApiModelProperty(value = "签到时间", name="signtime", dataType="Date", required=false, hidden=false)
+    @ApiModelProperty(value = "签到时间", name="signtime", dataType="Date", required=false, hidden=false,example = "2018-01-01 00:00:01")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date signtime;
     @ApiModelProperty(value = "签到状态 0未签到 1已签到 2请假 3旷课", name="status", dataType="Integer", required=false, hidden=false)
     private Integer status;

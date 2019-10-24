@@ -1,6 +1,7 @@
 package com.attencecheckin.javabackend.entity;
 
 import com.attencecheckin.javabackend.common.arg.BaseArg;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -24,9 +25,11 @@ public class Student implements BaseArg {
     private String avaterurl;
     @ApiModelProperty(value = "手机号", name="avaterurl", dataType="String", required=false, hidden=false)
     private String phonenumber;
-    @ApiModelProperty(value = "注册时间", name="registertime", dataType="Date", required=false, hidden=false)
+    @ApiModelProperty(value = "注册时间", name="registertime", dataType="Date", required=false, hidden=false,example = "2018-01-01 00:00:01")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date registertime;
-    @ApiModelProperty(value = "修改时间", name="updatetime", dataType="Date", required=false, hidden=false)
+    @ApiModelProperty(value = "修改时间", name="updatetime", dataType="Date", required=false, hidden=false,example = "2018-01-01 00:00:01")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date updatetime;
     @ApiModelProperty(value = "班级id", name="classid", dataType="Integer", required=false, hidden=false)
     private Integer classid;

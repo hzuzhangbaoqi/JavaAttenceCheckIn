@@ -1,6 +1,7 @@
 package com.attencecheckin.javabackend.entity;
 
 import com.attencecheckin.javabackend.common.arg.BaseArg;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -15,7 +16,8 @@ public class LoginInfoLog implements BaseArg {
     private Integer loginid;
     @ApiModelProperty(value = "用户类型 1老师 2学生", name="loginusertype", dataType="Integer", required=false, hidden=false)
     private Integer loginusertype;
-    @ApiModelProperty(value = "登录时间", name="logintime", dataType="Date", required=false, hidden=false)
+    @ApiModelProperty(value = "登录时间", name="logintime", dataType="Date", required=false, hidden=false,example = "2018-01-01 00:00:01")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date logintime;
     @ApiModelProperty(value = "登录Ip", name="ip", dataType="String", required=false, hidden=false)
     private String ip;
