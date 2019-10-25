@@ -28,7 +28,7 @@ public class LoginInfoLogController {
 
     @PostMapping("/insert")
     @ApiOperation(value = "insert", notes = "增加一条数据", httpMethod = "POST")
-    public JsonResult<Integer> insert( LoginInfoLog logininfolog) throws Exception{
+    public JsonResult<Integer> insert(@RequestBody LoginInfoLog logininfolog) throws Exception{
       /*logininfolog.setId(ApplicationUtils.getUUID());*/
        logininfologService.save(logininfolog);
         return new JsonResult<Integer>(1);
@@ -42,7 +42,7 @@ public class LoginInfoLogController {
 
     @PostMapping("/update")
     @ApiOperation(value = "update", notes = "更新数据", httpMethod = "POST")
-    public JsonResult<Integer> update(LoginInfoLog logininfolog) throws Exception {
+    public JsonResult<Integer> update(@RequestBody LoginInfoLog logininfolog) throws Exception {
         Integer state = logininfologService.update(logininfolog);
         return new JsonResult<Integer>(state);
     }

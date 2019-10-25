@@ -28,7 +28,7 @@ public class TeacherController {
 
     @PostMapping("/insert")
     @ApiOperation(value = "insert", notes = "增加一条数据", httpMethod = "POST")
-    public JsonResult<Integer> insert( Teacher teacher) throws Exception{
+    public JsonResult<Integer> insert(@RequestBody Teacher teacher) throws Exception{
 
         teacherService.save(teacher);
         return new JsonResult<Integer>(1);
@@ -42,7 +42,7 @@ public class TeacherController {
 
     @PostMapping("/update")
     @ApiOperation(value = "update", notes = "更新数据", httpMethod = "POST")
-    public JsonResult<Integer> update(Teacher teacher) throws Exception {
+    public JsonResult<Integer> update(@RequestBody Teacher teacher) throws Exception {
         Integer state = teacherService.update(teacher);
         return new JsonResult<Integer>(state);
     }

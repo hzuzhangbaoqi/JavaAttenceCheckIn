@@ -27,7 +27,7 @@ public class SignInController {
 
     @PostMapping("/insert")
     @ApiOperation(value = "insert", notes = "增加一条数据", httpMethod = "POST")
-    public JsonResult<Integer> insert( SignIn signIn) throws Exception{
+    public JsonResult<Integer> insert(@RequestBody SignIn signIn) throws Exception{
       /*signIn.setId(ApplicationUtils.getUUID());*/
        signinService.save(signIn);
         return new JsonResult<Integer>(1);
@@ -41,7 +41,7 @@ public class SignInController {
 
     @PostMapping("/update")
     @ApiOperation(value = "update", notes = "更新数据", httpMethod = "POST")
-    public JsonResult<Integer> update(SignIn signIn) throws Exception {
+    public JsonResult<Integer> update(@RequestBody SignIn signIn) throws Exception {
         Integer state = signinService.update(signIn);
         return new JsonResult<Integer>(state);
     }

@@ -9,10 +9,7 @@ import com.attencecheckin.javabackend.entity.Student;
 import com.attencecheckin.javabackend.entity.Teacher;
 import com.attencecheckin.javabackend.service.StudentService;
 import com.attencecheckin.javabackend.service.TeacherService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import me.chanjar.weixin.common.error.WxErrorException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -20,6 +17,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.WebUtils;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 /**
  * @program: javabackend
@@ -40,10 +42,9 @@ public class WechatRegisterController {
     public TeacherService teacherService;
     private final static Logger logger = LoggerFactory.getLogger(WechatRegisterController.class);
 
-    @PostMapping("/wechat/student")
+    @PostMapping(value="/wechat/student")
     @ApiOperation(value = "学生注册", notes = "小程序进行注册登录调用的接口，进行读者账号和微信openid绑定操作", httpMethod = "POST")
-    public JsonResult<Student> wechatStudentLogin( Student student) {
-
+    public JsonResult<Student> wechatStudentLogin(HttpServletRequest request, HttpServletResponse response,@RequestBody Student student) {
         if (studentService.existById(student.getId())) return new JsonResult(ResultEnum.NOT_DATA.val(), "学生账号存在");
         if (StringUtils.isBlank(student.getPassword())) {
             return new JsonResult(ResultEnum.PARAMS_ERROR.val(), "密码不能为空");
@@ -58,7 +59,7 @@ public class WechatRegisterController {
     }
     @PostMapping("/wechat/teacher")
     @ApiOperation(value = "教师注册", notes = "小程序进行注册登录调用的接口，进行读者账号和微信openid绑定操作", httpMethod = "POST")
-    public JsonResult<Student> wechatStudentLogin( Teacher teacher) {
+    public JsonResult<Student> wechatStudentLogin(HttpServletRequest request, HttpServletResponse response,@RequestBody Teacher teacher) {
 
         if (teacherService.existById(teacher.getId())) return new JsonResult(ResultEnum.NOT_DATA.val(), "教师账号存在");
         if (StringUtils.isBlank(teacher.getPassword())) {

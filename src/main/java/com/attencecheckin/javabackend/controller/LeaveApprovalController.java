@@ -28,7 +28,7 @@ public class LeaveApprovalController {
 
     @PostMapping("/insert")
     @ApiOperation(value = "insert", notes = "增加一条数据", httpMethod = "POST")
-    public JsonResult<Integer> insert( LeaveApproval leaveapproval) throws Exception{
+    public JsonResult<Integer> insert(@RequestBody LeaveApproval leaveapproval) throws Exception{
       /*leaveapproval.setId(ApplicationUtils.getUUID());*/
        leaveapprovalService.save(leaveapproval);
         return new JsonResult<Integer>(1);
@@ -42,7 +42,7 @@ public class LeaveApprovalController {
 
     @PostMapping("/update")
     @ApiOperation(value = "update", notes = "更新数据", httpMethod = "POST")
-    public JsonResult<Integer> update(LeaveApproval leaveapproval) throws Exception {
+    public JsonResult<Integer> update(@RequestBody LeaveApproval leaveapproval) throws Exception {
         Integer state = leaveapprovalService.update(leaveapproval);
         return new JsonResult<Integer>(state);
     }
