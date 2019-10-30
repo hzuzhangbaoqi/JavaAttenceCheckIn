@@ -44,11 +44,10 @@ public class WechatLoginController {
 
     private final static Logger logger = LoggerFactory.getLogger(WechatLoginController.class);
 
-    @PostMapping("/login")
+    @RequestMapping("/login")
     @ApiOperation(value = "微信登录", notes = "小程序进行登录调用的接口，进行读者账号和微信openid绑定操作", httpMethod = "POST")
     public JsonResult wechatLogin(@RequestParam(name = "id", required = false) Integer id,
                                            @RequestParam(name = "passWord", required = false) String passWord,
-                                           @RequestParam(name = "jscode", required = true) String jscode,
                                            @RequestParam(name = "usertype", required = true) String usertype,
                                            HttpServletRequest request, HttpServletResponse response) {
         try {
@@ -69,11 +68,10 @@ public class WechatLoginController {
 
 
 
-    @PostMapping("/studentLogin")
+    @RequestMapping("/studentLogin")
     @ApiOperation(value = "学生微信登录", notes = "学生微信登录,小程序进行登录调用的接口，进行读者账号和微信openid绑定操作", httpMethod = "POST")
     public JsonResult<Student> wechatStudentLogin(@RequestParam @ApiParam(name = "id", value = "用户ID", required = false)Integer id,
-                                                  @RequestParam @ApiParam(name = "passWord", value = "用户密码", required = false) String passWord,
-                                                  @RequestParam@ApiParam(name = "jscode", value = "jscode", required = false) String jscode) {
+                                                  @RequestParam @ApiParam(name = "passWord", value = "用户密码", required = false) String passWord) {
 
         final WxMaService wxService = WxMaConfiguration.getMaService(appid);
         Student student = studentService.get(id);
@@ -81,7 +79,10 @@ public class WechatLoginController {
         if (!student.getPassword().equals(passWord)) {
             return new JsonResult(ResultEnum.PARAMS_ERROR.val(), "密码错误");
         }
-        try {
+        JsonResult result = new JsonResult(ResultEnum.NORMAL.val(), "登录成功");
+        result.setData(student);
+        return result;
+        /*try {
             WxMaJscode2SessionResult session = wxService.getUserService().getSessionInfo(jscode);
             this.logger.info(session.getSessionKey());
             this.logger.info(session.getOpenid());
@@ -103,15 +104,14 @@ public class WechatLoginController {
         } catch (WxErrorException e) {
             this.logger.error(e.getMessage(), e);
             return new JsonResult(ResultEnum.SYS_ERROR.val(), "登录异常"+e.getMessage());
-        }
+        }*/
     }
 
 
-    @PostMapping("/teacherLogin")
+    @RequestMapping("/teacherLogin")
     @ApiOperation(value = "教师微信登录", notes = "教师微信登录小程序进行登录调用的接口，进行读者账号和微信openid绑定操作", httpMethod = "POST")
     public JsonResult<Student> wechatTeacherLogin(@RequestParam@ApiParam(name = "id", value = "用户ID", required = false)Integer id,
-                                                  @RequestParam@ApiParam(name = "passWord", value = "用户密码", required = false) String passWord,
-                                                  @RequestParam@ApiParam(name = "jscode", value = "jscode", required = false) String jscode) {
+                                                  @RequestParam@ApiParam(name = "passWord", value = "用户密码", required = false) String passWord) {
 
         final WxMaService wxService = WxMaConfiguration.getMaService(appid);
 
@@ -120,7 +120,11 @@ public class WechatLoginController {
         if (!teacher.getPassword().equals(passWord)) {
             return new JsonResult(ResultEnum.PARAMS_ERROR.val(), "密码错误");
         }
-        try {
+
+        JsonResult result = new JsonResult(ResultEnum.NORMAL.val(), "登录成功");
+        result.setData(teacher);
+        return result;
+        /*try {
             WxMaJscode2SessionResult session = wxService.getUserService().getSessionInfo(jscode);
             this.logger.info(session.getSessionKey());
             this.logger.info(session.getOpenid());
@@ -142,7 +146,7 @@ public class WechatLoginController {
         } catch (WxErrorException e) {
             this.logger.error(e.getMessage(), e);
             return new JsonResult(ResultEnum.SYS_ERROR.val(), "登录异常"+e.getMessage());
-        }
+        }*/
     }
 
 }

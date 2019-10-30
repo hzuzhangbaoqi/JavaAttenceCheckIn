@@ -1,6 +1,9 @@
 package com.attencecheckin.javabackend.common.enumer;
 
 public enum ResultEnum {
+
+    /** 成功 */
+    NORMAL("1", "正常"),
     /** 成功 */
     SUCCESS("200", "成功"),
     /** 操作失败 */

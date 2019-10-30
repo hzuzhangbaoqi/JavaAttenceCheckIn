@@ -51,7 +51,7 @@ public class WechatRegisterController {
         }
         try {
             Student save = studentService.save(student);
-            return new JsonResult(ResultEnum.SYS_ERROR.val(), "注册成功");
+            return new JsonResult(ResultEnum.NORMAL.val(), "注册成功");
         } catch (Exception e) {
             this.logger.error(e.getMessage(), e);
             return new JsonResult(ResultEnum.SYS_ERROR.val(), "注册异常");
@@ -67,7 +67,7 @@ public class WechatRegisterController {
         }
         try {
             Teacher save = teacherService.save(teacher);
-            return new JsonResult(ResultEnum.SYS_ERROR.val(), "注册成功");
+            return new JsonResult(ResultEnum.NORMAL.val(), "注册成功");
         } catch (Exception e) {
             this.logger.error(e.getMessage(), e);
             return new JsonResult(ResultEnum.SYS_ERROR.val(), "注册异常");

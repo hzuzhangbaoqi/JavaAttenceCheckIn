@@ -59,7 +59,9 @@ public class GlobalExceptionHandler {
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     public JsonResult handleUnexpectedServer(Exception ex) {
         logger.error("系统异常：", ex);
-        return new JsonResult(ResultEnum.EXCEPTION.val(), ResultEnum.EXCEPTION.msg());
+        JsonResult<Exception> jsonResult = new JsonResult(ResultEnum.EXCEPTION.val(), ResultEnum.EXCEPTION.msg());
+        jsonResult.setData(ex);
+        return jsonResult;
     }
     /**
      * 拦截业务异常，返回业务异常信息

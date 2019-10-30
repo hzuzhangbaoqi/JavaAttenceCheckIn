@@ -39,6 +39,9 @@ spring:
       hibernate:
         ddl-auto: update
       show-sql: true
+    messages:
+      encoding: utf-8
+      basename: i18n/messages
 # 打印sql
 logging:
   config: classpath:logback.xml
