@@ -14,4 +14,5 @@ import java.util.List;
 public interface SigninService extends BaseService<SignIn,Integer> {
     List<SignIn> selectSigninBycourseId(Integer courseid, Integer type);
     int studentSignin(Integer studentid,Integer courseid,String location,Integer doubt);
+    List<SignIn> showSignin(Integer courseid,String time,Integer signtype);
 }

@@ -29,4 +29,5 @@ public interface SignInMapper extends BaseDAO<SignIn,Integer> {
     int updateByPrimaryKeySelective(SignIn record);
 
     int updateByPrimaryKey(SignIn record);
+    List<SignIn> showSignin(@Param("courseid") Integer courseid,@Param("time")String time,@Param("signtype") Integer signtype);
 }

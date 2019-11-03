@@ -90,7 +90,7 @@ public class SignInController {
         PageInfo<SignIn> pageInfo = new PageInfo<SignIn>(list);
         return new JsonResult<PageInfo<SignIn>>(pageInfo);
     }
-
+    @ApiOperation(value = "startSign", notes = "教师点击按钮开始签到")
     @RequestMapping("/startSign")
     @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
     public JsonResult startSign(HttpServletRequest request, HttpServletResponse response,
@@ -139,18 +139,20 @@ public class SignInController {
         }
         return result;
     }
-
+    @ApiOperation(value = "startSign", notes = "查看课程的签到情况")
     @RequestMapping("/showStudentSign")
     public JsonResult startSign(HttpServletRequest request, HttpServletResponse response,
-                                String teacherId) throws Exception {
+                                Integer courseid,String time) throws Exception {
         JsonResult result = null;
-        List<SignIn> list = signinService.getAllList();
+        Date signTime = DateUtils.parseDate(time, new String[]{"yyyy-MM-dd HH:mm:ss"});
+        String format = DateFormatUtils.format(signTime, "yyyy-MM-dd");
+        List<SignIn> list = signinService.showSignin(courseid, format, 1);
         result = new JsonResult(ResultEnum.NORMAL.val(), "查看学生签到情况");
         result.setData(list);
         return  result;
     }
 
-
+    @ApiOperation(value = "isCanSign", notes = "查看课程是否可以开始签到")
     @RequestMapping("/isCanSign")
     public JsonResult isCanSign(HttpServletRequest request, HttpServletResponse response,
                             String studentId,Integer courseid) throws Exception {

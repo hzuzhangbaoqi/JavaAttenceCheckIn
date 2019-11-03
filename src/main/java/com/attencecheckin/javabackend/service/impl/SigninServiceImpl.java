@@ -4,6 +4,8 @@ import com.attencecheckin.javabackend.dao.SignInMapper;
 import com.attencecheckin.javabackend.entity.SignIn;
 import com.attencecheckin.javabackend.entity.SignInExample;
 import com.attencecheckin.javabackend.service.SigninService;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.http.client.utils.DateUtils;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -132,6 +134,10 @@ public class SigninServiceImpl extends AbstractBaseServiceImpl<SignIn,Integer> i
         SignInExample.Criteria criteria = example.createCriteria();
         criteria.andCourseidEqualTo(courseid);
         criteria.andSigntypeEqualTo(type);
+        Date date1 = DateUtils.parseDate(DateUtils.formatDate(new Date(), "yyyy-MM-dd") + " 00:00:00", new String[]{"yyyy-MM-dd HH:mm:ss"});
+        criteria.andSigntimeGreaterThanOrEqualTo(date1);
+        Date date2 = DateUtils.parseDate(DateUtils.formatDate(new Date(), "yyyy-MM-dd") + " 23:59:59", new String[]{"yyyy-MM-dd HH:mm:ss"});
+        criteria.andSigntimeLessThanOrEqualTo(date2);
         return signInMapper.selectByExample(example);
     }
 
@@ -146,8 +152,10 @@ public class SigninServiceImpl extends AbstractBaseServiceImpl<SignIn,Integer> i
         signIn.setStatus(1);
         signIn.setSuslocation(location);
         signIn.setSuslocationstatus(doubt);
-        return signInMapper.updateByExample(signIn, example);
+        return signInMapper.updateByExampleSelective(signIn, example);
     }
 
-
+    public List<SignIn> showSignin(Integer courseid,String time,Integer signtype) throws DataAccessException {
+        return signInMapper.showSignin(courseid,time,signtype);
+    }
 }
