@@ -43,7 +43,7 @@ public class WechatRegisterController {
     private final static Logger logger = LoggerFactory.getLogger(WechatRegisterController.class);
 
     @PostMapping(value="/wechat/student")
-    @ApiOperation(value = "学生注册", notes = "小程序进行注册登录调用的接口，进行读者账号和微信openid绑定操作", httpMethod = "POST")
+    @ApiOperation(value = "学生注册", notes = "小程序进行注册登录调用的接口，进行读者账号和微信openid绑定操作")
     public JsonResult<Student> wechatStudentLogin(HttpServletRequest request, HttpServletResponse response,@RequestBody Student student) {
         if (studentService.existById(student.getId())) return new JsonResult(ResultEnum.NOT_DATA.val(), "学生账号存在");
         if (StringUtils.isBlank(student.getPassword())) {
@@ -58,7 +58,7 @@ public class WechatRegisterController {
         }
     }
     @PostMapping("/wechat/teacher")
-    @ApiOperation(value = "教师注册", notes = "小程序进行注册登录调用的接口，进行读者账号和微信openid绑定操作", httpMethod = "POST")
+    @ApiOperation(value = "教师注册", notes = "小程序进行注册登录调用的接口，进行读者账号和微信openid绑定操作")
     public JsonResult<Student> wechatStudentLogin(HttpServletRequest request, HttpServletResponse response,@RequestBody Teacher teacher) {
 
         if (teacherService.existById(teacher.getId())) return new JsonResult(ResultEnum.NOT_DATA.val(), "教师账号存在");

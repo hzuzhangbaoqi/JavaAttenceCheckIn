@@ -1,35 +1,36 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.attencecheckin.javabackend.dao.CourseMapper" >
-  <resultMap id="BaseResultMap" type="com.attencecheckin.javabackend.entity.Course" >
-    <id column="id" property="id" jdbcType="INTEGER" />
-    <result column="courseName" property="coursename" jdbcType="VARCHAR" />
-    <result column="courseStartTime" property="coursestarttime" jdbcType="TIMESTAMP" />
-    <result column="courseEndTime" property="courseendtime" jdbcType="TIMESTAMP" />
-    <result column="week" property="week" jdbcType="INTEGER" />
-    <result column="jieci" property="jieci" jdbcType="INTEGER" />
-    <result column="classId" property="classid" jdbcType="INTEGER" />
-    <result column="classRoomId" property="classroomid" jdbcType="INTEGER" />
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.attencecheckin.javabackend.dao.CourseMapper">
+  <resultMap id="BaseResultMap" type="com.attencecheckin.javabackend.entity.Course">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="courseName" jdbcType="VARCHAR" property="coursename" />
+    <result column="courseStartTime" jdbcType="TIMESTAMP" property="coursestarttime" />
+    <result column="courseEndTime" jdbcType="TIMESTAMP" property="courseendtime" />
+    <result column="week" jdbcType="INTEGER" property="week" />
+    <result column="jieci" jdbcType="INTEGER" property="jieci" />
+    <result column="classId" jdbcType="INTEGER" property="classid" />
+    <result column="classRoomId" jdbcType="INTEGER" property="classroomid" />
+    <result column="teacherid" jdbcType="INTEGER" property="teacherid" />
   </resultMap>
-  <sql id="Example_Where_Clause" >
-    <where >
-      <foreach collection="oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -40,25 +41,25 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Update_By_Example_Where_Clause" >
-    <where >
-      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
-        <if test="criteria.valid" >
-          <trim prefix="(" suffix=")" prefixOverrides="and" >
-            <foreach collection="criteria.criteria" item="criterion" >
-              <choose >
-                <when test="criterion.noValue" >
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue" >
+                <when test="criterion.singleValue">
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue" >
+                <when test="criterion.betweenValue">
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue" >
+                <when test="criterion.listValue">
                   and ${criterion.condition}
-                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
                     #{listItem}
                   </foreach>
                 </when>
@@ -69,142 +70,154 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Base_Column_List" >
-    id, courseName, courseStartTime, courseEndTime, week, jieci, classId, classRoomId
+  <sql id="Base_Column_List">
+    id, courseName, courseStartTime, courseEndTime, week, jieci, classId, classRoomId,
+    teacherid
   </sql>
-  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.attencecheckin.javabackend.entity.CourseExample" >
+  <select id="selectByExample" parameterType="com.attencecheckin.javabackend.entity.CourseExample" resultMap="BaseResultMap">
     select
-    <if test="distinct" >
+    <if test="distinct">
       distinct
     </if>
     'true' as QUERYID,
     <include refid="Base_Column_List" />
     from course
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
-    <if test="orderByClause != null" >
+    <if test="orderByClause != null">
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
     <include refid="Base_Column_List" />
     from course
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from course
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.attencecheckin.javabackend.entity.CourseExample" >
+  <delete id="deleteByExample" parameterType="com.attencecheckin.javabackend.entity.CourseExample">
     delete from course
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.attencecheckin.javabackend.entity.Course" >
-    insert into course (id, courseName, courseStartTime, 
-      courseEndTime, week, jieci, 
-      classId, classRoomId)
-    values (#{id,jdbcType=INTEGER}, #{coursename,jdbcType=VARCHAR}, #{coursestarttime,jdbcType=TIMESTAMP}, 
-      #{courseendtime,jdbcType=TIMESTAMP}, #{week,jdbcType=INTEGER}, #{jieci,jdbcType=INTEGER}, 
-      #{classid,jdbcType=INTEGER}, #{classroomid,jdbcType=INTEGER})
+  <insert id="insert" parameterType="com.attencecheckin.javabackend.entity.Course">
+    insert into course (id, courseName, courseStartTime,
+      courseEndTime, week, jieci,
+      classId, classRoomId, teacherid
+      )
+    values (#{id,jdbcType=INTEGER}, #{coursename,jdbcType=VARCHAR}, #{coursestarttime,jdbcType=TIMESTAMP},
+      #{courseendtime,jdbcType=TIMESTAMP}, #{week,jdbcType=INTEGER}, #{jieci,jdbcType=INTEGER},
+      #{classid,jdbcType=INTEGER}, #{classroomid,jdbcType=INTEGER}, #{teacherid,jdbcType=INTEGER}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.attencecheckin.javabackend.entity.Course" >
+  <insert id="insertSelective" parameterType="com.attencecheckin.javabackend.entity.Course">
     insert into course
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         id,
       </if>
-      <if test="coursename != null" >
+      <if test="coursename != null">
         courseName,
       </if>
-      <if test="coursestarttime != null" >
+      <if test="coursestarttime != null">
         courseStartTime,
       </if>
-      <if test="courseendtime != null" >
+      <if test="courseendtime != null">
         courseEndTime,
       </if>
-      <if test="week != null" >
+      <if test="week != null">
         week,
       </if>
-      <if test="jieci != null" >
+      <if test="jieci != null">
         jieci,
       </if>
-      <if test="classid != null" >
+      <if test="classid != null">
         classId,
       </if>
-      <if test="classroomid != null" >
+      <if test="classroomid != null">
         classRoomId,
       </if>
+      <if test="teacherid != null">
+        teacherid,
+      </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="coursename != null" >
+      <if test="coursename != null">
         #{coursename,jdbcType=VARCHAR},
       </if>
-      <if test="coursestarttime != null" >
+      <if test="coursestarttime != null">
         #{coursestarttime,jdbcType=TIMESTAMP},
       </if>
-      <if test="courseendtime != null" >
+      <if test="courseendtime != null">
         #{courseendtime,jdbcType=TIMESTAMP},
       </if>
-      <if test="week != null" >
+      <if test="week != null">
         #{week,jdbcType=INTEGER},
       </if>
-      <if test="jieci != null" >
+      <if test="jieci != null">
         #{jieci,jdbcType=INTEGER},
       </if>
-      <if test="classid != null" >
+      <if test="classid != null">
         #{classid,jdbcType=INTEGER},
       </if>
-      <if test="classroomid != null" >
+      <if test="classroomid != null">
         #{classroomid,jdbcType=INTEGER},
+      </if>
+      <if test="teacherid != null">
+        #{teacherid,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.attencecheckin.javabackend.entity.CourseExample" resultType="java.lang.Integer" >
+  <select id="countByExample" parameterType="com.attencecheckin.javabackend.entity.CourseExample" resultType="java.lang.Integer">
     select count(*) from course
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map" >
+  <update id="updateByExampleSelective" parameterType="map">
     update course
-    <set >
-      <if test="record.id != null" >
+    <set>
+      <if test="record.id != null">
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.coursename != null" >
+      <if test="record.coursename != null">
         courseName = #{record.coursename,jdbcType=VARCHAR},
       </if>
-      <if test="record.coursestarttime != null" >
+      <if test="record.coursestarttime != null">
         courseStartTime = #{record.coursestarttime,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.courseendtime != null" >
+      <if test="record.courseendtime != null">
         courseEndTime = #{record.courseendtime,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.week != null" >
+      <if test="record.week != null">
         week = #{record.week,jdbcType=INTEGER},
       </if>
-      <if test="record.jieci != null" >
+      <if test="record.jieci != null">
         jieci = #{record.jieci,jdbcType=INTEGER},
       </if>
-      <if test="record.classid != null" >
+      <if test="record.classid != null">
         classId = #{record.classid,jdbcType=INTEGER},
       </if>
-      <if test="record.classroomid != null" >
+      <if test="record.classroomid != null">
         classRoomId = #{record.classroomid,jdbcType=INTEGER},
       </if>
+      <if test="record.teacherid != null">
+        teacherid = #{record.teacherid,jdbcType=INTEGER},
+      </if>
     </set>
-    <if test="_parameter != null" >
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map" >
+  <update id="updateByExample" parameterType="map">
     update course
     set id = #{record.id,jdbcType=INTEGER},
       courseName = #{record.coursename,jdbcType=VARCHAR},
@@ -213,39 +226,43 @@
       week = #{record.week,jdbcType=INTEGER},
       jieci = #{record.jieci,jdbcType=INTEGER},
       classId = #{record.classid,jdbcType=INTEGER},
-      classRoomId = #{record.classroomid,jdbcType=INTEGER}
-    <if test="_parameter != null" >
+      classRoomId = #{record.classroomid,jdbcType=INTEGER},
+      teacherid = #{record.teacherid,jdbcType=INTEGER}
+    <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.attencecheckin.javabackend.entity.Course" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.attencecheckin.javabackend.entity.Course">
     update course
-    <set >
-      <if test="coursename != null" >
+    <set>
+      <if test="coursename != null">
         courseName = #{coursename,jdbcType=VARCHAR},
       </if>
-      <if test="coursestarttime != null" >
+      <if test="coursestarttime != null">
         courseStartTime = #{coursestarttime,jdbcType=TIMESTAMP},
       </if>
-      <if test="courseendtime != null" >
+      <if test="courseendtime != null">
         courseEndTime = #{courseendtime,jdbcType=TIMESTAMP},
       </if>
-      <if test="week != null" >
+      <if test="week != null">
         week = #{week,jdbcType=INTEGER},
       </if>
-      <if test="jieci != null" >
+      <if test="jieci != null">
         jieci = #{jieci,jdbcType=INTEGER},
       </if>
-      <if test="classid != null" >
+      <if test="classid != null">
         classId = #{classid,jdbcType=INTEGER},
       </if>
-      <if test="classroomid != null" >
+      <if test="classroomid != null">
         classRoomId = #{classroomid,jdbcType=INTEGER},
+      </if>
+      <if test="teacherid != null">
+        teacherid = #{teacherid,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.attencecheckin.javabackend.entity.Course" >
+  <update id="updateByPrimaryKey" parameterType="com.attencecheckin.javabackend.entity.Course">
     update course
     set courseName = #{coursename,jdbcType=VARCHAR},
       courseStartTime = #{coursestarttime,jdbcType=TIMESTAMP},
@@ -253,7 +270,18 @@
       week = #{week,jdbcType=INTEGER},
       jieci = #{jieci,jdbcType=INTEGER},
       classId = #{classid,jdbcType=INTEGER},
-      classRoomId = #{classroomid,jdbcType=INTEGER}
+      classRoomId = #{classroomid,jdbcType=INTEGER},
+      teacherid = #{teacherid,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectCourseByTeacheridAndTime" resultMap="BaseResultMap">
+
+    select 'true' as QUERYID, id, courseName, courseStartTime, courseEndTime, week, jieci, classId, classRoomId, teacherid from course WHERE
+    teacherid = '11'
+    and STR_TO_DATE(CONCAT(DATE_FORMAT(now(),'%Y-%m-%d '),DATE_FORMAT(courseStartTime,'%T') ),'%Y-%m-%d %H:%i:%s') <![CDATA[ <= ]]>
+    STR_TO_DATE(CONCAT(DATE_FORMAT(now(),'%Y-%m-%d '),DATE_FORMAT(str_to_date(#{time}, '%Y-%m-%d %H:%i:%s'),'%T') ),'%Y-%m-%d %H:%i:%s')
+    and STR_TO_DATE(CONCAT(DATE_FORMAT(now(),'%Y-%m-%d '),DATE_FORMAT(courseEndTime,'%T') ),'%Y-%m-%d %H:%i:%s') <![CDATA[ > ]]>
+    STR_TO_DATE(CONCAT(DATE_FORMAT(now(),'%Y-%m-%d '),DATE_FORMAT(str_to_date(#{time}, '%Y-%m-%d %H:%i:%s'),'%T') ),'%Y-%m-%d %H:%i:%s')
+    and week = date_format(str_to_date(#{time}, '%Y-%m-%d %H:%i:%s'),'%w')
+  </select>
 </mapper>

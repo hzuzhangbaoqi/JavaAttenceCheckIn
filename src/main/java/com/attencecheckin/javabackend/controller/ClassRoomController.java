@@ -26,28 +26,28 @@ public class ClassRoomController {
     private ClassRoomService classroomService;
 
     @RequestMapping("/insert")
-    @ApiOperation(value = "insert", notes = "增加一条数据", httpMethod = "POST")
+    @ApiOperation(value = "insert", notes = "增加一条数据", consumes = "application/x-www-form-urlencoded")
     public JsonResult<Integer> insert(ClassRoom classroom) throws Exception{
       /*classroom.setId(ApplicationUtils.getUUID());*/
-       classroomService.save(classroom);
+        classroomService.save(classroom);
         return new JsonResult<Integer>(1);
     }
     @RequestMapping("/deleteById")
-    @ApiOperation(value = "deleteById", notes = "根据id删除数据", httpMethod = "POST")
+    @ApiOperation(value = "deleteById", notes = "根据id删除数据", consumes = "application/x-www-form-urlencoded")
     public JsonResult<Integer> deleteById(@RequestParam @ApiParam(name = "id", value = "id", required = true)Integer id) throws Exception {
         Integer state = classroomService.del(id);
         return new JsonResult<Integer>(state);
     }
 
     @RequestMapping("/update")
-    @ApiOperation(value = "update", notes = "更新数据", httpMethod = "POST")
+    @ApiOperation(value = "update", notes = "更新数据",consumes = "application/x-www-form-urlencoded")
     public JsonResult<Integer> update(ClassRoom classroom) throws Exception {
         Integer state = classroomService.update(classroom);
         return new JsonResult<Integer>(state);
     }
 
     @RequestMapping("/selectById")
-    @ApiOperation(value = "selectById", notes = "更加id查询", httpMethod = "POST")
+    @ApiOperation(value = "selectById", notes = "更加id查询",consumes = "application/x-www-form-urlencoded")
     public JsonResult<ClassRoom> selectById(@RequestParam @ApiParam(name = "id", value = "id", required = true)Integer id) throws Exception {
         ClassRoom classroom = classroomService.get(id);
         return new JsonResult<ClassRoom>(classroom);
@@ -60,7 +60,7 @@ public class ClassRoomController {
      * @Reutrn JsonResult<PageInfo<ClassRoom>>
      */
     @RequestMapping("/list")
-    @ApiOperation(value = "list", notes = "批量查询", httpMethod = "POST")
+    @ApiOperation(value = "list", notes = "批量查询",consumes = "application/x-www-form-urlencoded")
     public PageInfo<ClassRoom> list(@RequestParam(defaultValue = "0")@ApiParam(name = "page", value = "页数", required = true) Integer page,
                                                 @RequestParam(defaultValue = "0")@ApiParam(name = "size", value = "行数", required = true) Integer size) throws Exception {
         PageHelper.startPage(page, size);

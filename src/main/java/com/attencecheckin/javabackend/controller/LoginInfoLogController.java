@@ -27,28 +27,28 @@ public class LoginInfoLogController {
     private LoginInfoLogService logininfologService;
 
     @PostMapping("/insert")
-    @ApiOperation(value = "insert", notes = "增加一条数据", httpMethod = "POST")
-    public JsonResult<Integer> insert(@RequestBody LoginInfoLog logininfolog) throws Exception{
+    @ApiOperation(value = "insert", notes = "增加一条数据")
+    public JsonResult<Integer> insert(LoginInfoLog logininfolog) throws Exception{
       /*logininfolog.setId(ApplicationUtils.getUUID());*/
        logininfologService.save(logininfolog);
         return new JsonResult<Integer>(1);
     }
     @PostMapping("/deleteById")
-    @ApiOperation(value = "deleteById", notes = "根据id删除数据", httpMethod = "POST")
+    @ApiOperation(value = "deleteById", notes = "根据id删除数据")
     public JsonResult<Integer> deleteById(@RequestParam @ApiParam(name = "id", value = "主键", required = true)Integer id) throws Exception {
         Integer state = logininfologService.del(id);
         return new JsonResult<Integer>(state);
     }
 
     @PostMapping("/update")
-    @ApiOperation(value = "update", notes = "更新数据", httpMethod = "POST")
-    public JsonResult<Integer> update(@RequestBody LoginInfoLog logininfolog) throws Exception {
+    @ApiOperation(value = "update", notes = "更新数据")
+    public JsonResult<Integer> update(LoginInfoLog logininfolog) throws Exception {
         Integer state = logininfologService.update(logininfolog);
         return new JsonResult<Integer>(state);
     }
 
     @PostMapping("/selectById")
-    @ApiOperation(value = "selectById", notes = "更加id查询", httpMethod = "POST")
+    @ApiOperation(value = "selectById", notes = "更加id查询")
     public JsonResult<LoginInfoLog> selectById(@RequestParam @ApiParam(name = "id", value = "主键", required = true)Integer id) throws Exception {
         LoginInfoLog logininfolog = logininfologService.get(id);
         return new JsonResult<LoginInfoLog>(logininfolog);
@@ -61,7 +61,7 @@ public class LoginInfoLogController {
      * @Reutrn JsonResult<PageInfo<LoginInfoLog>>
      */
     @PostMapping("/list")
-    @ApiOperation(value = "list", notes = "批量查询", httpMethod = "POST")
+    @ApiOperation(value = "list", notes = "批量查询")
     public JsonResult<PageInfo<LoginInfoLog>> list(@RequestParam(defaultValue = "0")@ApiParam(name = "page", value = "页数", required = true) Integer page,
                                                    @RequestParam(defaultValue = "0")@ApiParam(name = "size", value = "行数", required = true) Integer size) throws Exception {
         PageHelper.startPage(page, size);

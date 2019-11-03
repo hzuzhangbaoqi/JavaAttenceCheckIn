@@ -27,28 +27,28 @@ public class LeaveApprovalController {
     private LeaveApprovalService leaveapprovalService;
 
     @PostMapping("/insert")
-    @ApiOperation(value = "insert", notes = "增加一条数据", httpMethod = "POST")
-    public JsonResult<Integer> insert(@RequestBody LeaveApproval leaveapproval) throws Exception{
+    @ApiOperation(value = "insert", notes = "增加一条数据")
+    public JsonResult<Integer> insert(LeaveApproval leaveapproval) throws Exception{
       /*leaveapproval.setId(ApplicationUtils.getUUID());*/
        leaveapprovalService.save(leaveapproval);
         return new JsonResult<Integer>(1);
     }
     @PostMapping("/deleteById")
-    @ApiOperation(value = "deleteById", notes = "根据id删除数据", httpMethod = "POST")
+    @ApiOperation(value = "deleteById", notes = "根据id删除数据")
     public JsonResult<Integer> deleteById(@RequestParam  @ApiParam(name = "id", value = "id", required = true)Integer id) throws Exception {
         Integer state = leaveapprovalService.del(id);
         return new JsonResult<Integer>(state);
     }
 
     @PostMapping("/update")
-    @ApiOperation(value = "update", notes = "更新数据", httpMethod = "POST")
-    public JsonResult<Integer> update(@RequestBody LeaveApproval leaveapproval) throws Exception {
+    @ApiOperation(value = "update", notes = "更新数据")
+    public JsonResult<Integer> update(LeaveApproval leaveapproval) throws Exception {
         Integer state = leaveapprovalService.update(leaveapproval);
         return new JsonResult<Integer>(state);
     }
 
     @PostMapping("/selectById")
-    @ApiOperation(value = "selectById", notes = "更加id查询", httpMethod = "POST")
+    @ApiOperation(value = "selectById", notes = "更加id查询")
     public JsonResult<LeaveApproval> selectById(@RequestParam  @ApiParam(name = "id", value = "id", required = true)Integer id) throws Exception {
         LeaveApproval leaveapproval = leaveapprovalService.get(id);
         return new JsonResult<LeaveApproval>(leaveapproval);
@@ -61,7 +61,7 @@ public class LeaveApprovalController {
      * @Reutrn JsonResult<PageInfo<LeaveApproval>>
      */
     @PostMapping("/list")
-    @ApiOperation(value = "list", notes = "批量查询", httpMethod = "POST")
+    @ApiOperation(value = "list", notes = "批量查询")
     public JsonResult<PageInfo<LeaveApproval>> list(@RequestParam(defaultValue = "0")@ApiParam(name = "page", value = "页数", required = true) Integer page,
                                                     @RequestParam(defaultValue = "0")@ApiParam(name = "size", value = "行数", required = true) Integer size) throws Exception {
         PageHelper.startPage(page, size);

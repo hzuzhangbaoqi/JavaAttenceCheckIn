@@ -30,6 +30,8 @@ public class Course implements BaseArg {
     @ApiModelProperty(value = "教室Id", name="classroomid", dataType="Integer", required=false, hidden=false)
     private Integer classroomid;
 
+    private Integer teacherid;
+
     @Override
     public void checkArgs() {
 

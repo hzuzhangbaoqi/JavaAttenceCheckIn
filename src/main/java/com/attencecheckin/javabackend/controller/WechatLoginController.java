@@ -45,7 +45,7 @@ public class WechatLoginController {
     private final static Logger logger = LoggerFactory.getLogger(WechatLoginController.class);
 
     @RequestMapping("/login")
-    @ApiOperation(value = "微信登录", notes = "小程序进行登录调用的接口，进行读者账号和微信openid绑定操作", httpMethod = "POST")
+    @ApiOperation(value = "微信登录", notes = "小程序进行登录调用的接口，进行读者账号和微信openid绑定操作")
     public JsonResult wechatLogin(@RequestParam(name = "id", required = false) Integer id,
                                            @RequestParam(name = "passWord", required = false) String passWord,
                                            @RequestParam(name = "usertype", required = true) String usertype,
@@ -69,7 +69,7 @@ public class WechatLoginController {
 
 
     @RequestMapping("/studentLogin")
-    @ApiOperation(value = "学生微信登录", notes = "学生微信登录,小程序进行登录调用的接口，进行读者账号和微信openid绑定操作", httpMethod = "POST")
+    @ApiOperation(value = "学生微信登录", notes = "学生微信登录,小程序进行登录调用的接口，进行读者账号和微信openid绑定操作")
     public JsonResult<Student> wechatStudentLogin(@RequestParam @ApiParam(name = "id", value = "用户ID", required = false)Integer id,
                                                   @RequestParam @ApiParam(name = "passWord", value = "用户密码", required = false) String passWord) {
 
@@ -109,7 +109,7 @@ public class WechatLoginController {
 
 
     @RequestMapping("/teacherLogin")
-    @ApiOperation(value = "教师微信登录", notes = "教师微信登录小程序进行登录调用的接口，进行读者账号和微信openid绑定操作", httpMethod = "POST")
+    @ApiOperation(value = "教师微信登录", notes = "教师微信登录小程序进行登录调用的接口，进行读者账号和微信openid绑定操作")
     public JsonResult<Student> wechatTeacherLogin(@RequestParam@ApiParam(name = "id", value = "用户ID", required = false)Integer id,
                                                   @RequestParam@ApiParam(name = "passWord", value = "用户密码", required = false) String passWord) {
 

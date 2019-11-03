@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -126,4 +127,27 @@ public class SigninServiceImpl extends AbstractBaseServiceImpl<SignIn,Integer> i
         criteria.andIdIn(Arrays.asList(ids));
         return signInMapper.deleteByExample(example);
     }
+    public List<SignIn> selectSigninBycourseId(Integer courseid,Integer type){
+        SignInExample example = new SignInExample();
+        SignInExample.Criteria criteria = example.createCriteria();
+        criteria.andCourseidEqualTo(courseid);
+        criteria.andSigntypeEqualTo(type);
+        return signInMapper.selectByExample(example);
+    }
+
+    public int studentSignin(Integer studentid,Integer courseid,String location,Integer doubt) throws DataAccessException {
+        //获取教师签到的位置
+        SignInExample example = new SignInExample();
+        SignInExample.Criteria criteria = example.createCriteria();
+        criteria.andStudentidEqualTo(studentid);
+        criteria.andCourseidEqualTo(courseid);
+        SignIn signIn = new SignIn();
+        signIn.setSigntime(new Date());
+        signIn.setStatus(1);
+        signIn.setSuslocation(location);
+        signIn.setSuslocationstatus(doubt);
+        return signInMapper.updateByExample(signIn, example);
+    }
+
+
 }

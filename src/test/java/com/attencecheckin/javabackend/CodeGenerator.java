@@ -40,7 +40,7 @@ import java.util.*;
      * @param args
      */
     public static void main(String[] args) {
-        genCode("classInfo");
+        genCode("studentcourse");
     }
 
     /**

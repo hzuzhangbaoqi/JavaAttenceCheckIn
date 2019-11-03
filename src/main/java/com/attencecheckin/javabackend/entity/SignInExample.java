@@ -541,6 +541,66 @@ public class SignInExample implements BaseArg {
             addCriterion("susLocation not between", value1, value2, "suslocation");
             return (Criteria) this;
         }
+
+        public Criteria andSigntypeIsNull() {
+            addCriterion("signtype is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSigntypeIsNotNull() {
+            addCriterion("signtype is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSigntypeEqualTo(Integer value) {
+            addCriterion("signtype =", value, "signtype");
+            return (Criteria) this;
+        }
+
+        public Criteria andSigntypeNotEqualTo(Integer value) {
+            addCriterion("signtype <>", value, "signtype");
+            return (Criteria) this;
+        }
+
+        public Criteria andSigntypeGreaterThan(Integer value) {
+            addCriterion("signtype >", value, "signtype");
+            return (Criteria) this;
+        }
+
+        public Criteria andSigntypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("signtype >=", value, "signtype");
+            return (Criteria) this;
+        }
+
+        public Criteria andSigntypeLessThan(Integer value) {
+            addCriterion("signtype <", value, "signtype");
+            return (Criteria) this;
+        }
+
+        public Criteria andSigntypeLessThanOrEqualTo(Integer value) {
+            addCriterion("signtype <=", value, "signtype");
+            return (Criteria) this;
+        }
+
+        public Criteria andSigntypeIn(List<Integer> values) {
+            addCriterion("signtype in", values, "signtype");
+            return (Criteria) this;
+        }
+
+        public Criteria andSigntypeNotIn(List<Integer> values) {
+            addCriterion("signtype not in", values, "signtype");
+            return (Criteria) this;
+        }
+
+        public Criteria andSigntypeBetween(Integer value1, Integer value2) {
+            addCriterion("signtype between", value1, value2, "signtype");
+            return (Criteria) this;
+        }
+
+        public Criteria andSigntypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("signtype not between", value1, value2, "signtype");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

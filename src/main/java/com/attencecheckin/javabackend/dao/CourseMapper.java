@@ -2,6 +2,8 @@ package com.attencecheckin.javabackend.dao;
 
 import com.attencecheckin.javabackend.entity.Course;
 import com.attencecheckin.javabackend.entity.CourseExample;
+
+import java.util.Date;
 import java.util.List;
 
 import com.attencecheckin.javabackend.entity.LeaveApproval;
@@ -29,4 +31,6 @@ public interface CourseMapper extends BaseDAO<Course, Integer>{
     int updateByPrimaryKeySelective(Course record);
 
     int updateByPrimaryKey(Course record);
+
+    List<Course> selectCourseByTeacheridAndTime(@Param("teacherid") Integer teacherid,@Param("time")String time);
 }

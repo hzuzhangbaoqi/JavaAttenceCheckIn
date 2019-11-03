@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -125,5 +126,15 @@ public class CourseServiceImpl extends AbstractBaseServiceImpl<Course,Integer> i
         CourseExample.Criteria criteria = example.createCriteria();
         criteria.andIdIn(Arrays.asList(ids));
         return courseMapper.deleteByExample(example);
+    }
+
+
+    public Course getCourseByTeacheridAndTime(Integer teacherId,String time){
+        List<Course> courses = courseMapper.selectCourseByTeacheridAndTime(teacherId,time);
+        if(courses.size()<=0){
+            return null;
+        }
+        return courses.get(0);
+
     }
 }

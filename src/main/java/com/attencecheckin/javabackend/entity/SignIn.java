@@ -26,6 +26,7 @@ public class SignIn implements BaseArg {
     @ApiModelProperty(value = "可疑位置经纬度", name="status", dataType="Integer", required=false, hidden=false)
     private String suslocation;
 
+    private Integer signtype;
     @Override
     public void checkArgs() {
         

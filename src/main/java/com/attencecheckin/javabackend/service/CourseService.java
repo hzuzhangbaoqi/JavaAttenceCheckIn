@@ -4,6 +4,8 @@ package com.attencecheckin.javabackend.service;
 import com.attencecheckin.javabackend.entity.Course;
 import com.attencecheckin.javabackend.entity.Course;
 
+import java.util.Date;
+
 /**
 * @Description: CourseService接口
 * @author 
@@ -11,5 +13,5 @@ import com.attencecheckin.javabackend.entity.Course;
 */
 public interface CourseService extends BaseService<Course,Integer> {
 
-
+    Course getCourseByTeacheridAndTime(Integer teacherId,String time);
 }
