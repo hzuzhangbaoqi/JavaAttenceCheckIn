@@ -15,6 +15,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.attencecheckin.javabackend.service.SigninService;
 import io.swagger.annotations.*;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.transaction.annotation.Propagation;
@@ -24,10 +25,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
 * @Description: SignInController类
@@ -98,11 +97,11 @@ public class SignInController {
         Map<String,Object> map =new HashMap<String,Object>();
         JsonResult result = null;
         //查找课程
-        Date startSignTime = DateUtils.parseDate(time, new String[]{"yyyy-MM-dd HH:mm:ss"});
+        Date startSignTime = DateUtils.parseDate(time, new String[]{"yyyy-MM-dd hh:mm:ss"});
 
         Course course = courseService.getCourseByTeacheridAndTime(Integer.parseInt(teacherId), time);
         if(course==null){
-            result =  new JsonResult(ResultEnum.NOT_DATA.val(), "获取相应课程信息失败");
+            result =  new JsonResult(ResultEnum.NOT_DATA.val(), "教师当前时段没有对应课程，开始签到失败");
         }else{
             //查询是否开启了签到
             List<SignIn> signIns = signinService.selectSigninBycourseId(course.getId(), 2);
@@ -124,6 +123,7 @@ public class SignInController {
                     List<Integer> studentids = studentcourseService.getStudentidsByCourse(course.getId());
                     for (Integer studentid : studentids) {
                         SignIn studentSignIn = new SignIn();
+                        studentSignIn.setSigntime(new Date());
                         studentSignIn.setStudentid(studentid);
                         studentSignIn.setStatus(0);
                         studentSignIn.setCourseid(course.getId());
@@ -144,9 +144,11 @@ public class SignInController {
     public JsonResult startSign(HttpServletRequest request, HttpServletResponse response,
                                 Integer courseid,String time) throws Exception {
         JsonResult result = null;
-        Date signTime = DateUtils.parseDate(time, new String[]{"yyyy-MM-dd HH:mm:ss"});
-        String format = DateFormatUtils.format(signTime, "yyyy-MM-dd");
-        List<SignIn> list = signinService.showSignin(courseid, format, 1);
+        if(StringUtils.isBlank(time)){
+            //Date signTime = DateUtils.parseDate(time, new String[]{"yyyy-MM-dd hh:mm:ss"});
+            time = DateFormatUtils.format(new Date(), "yyyy-MM-dd");
+        }
+        List<SignIn> list = signinService.showSignin(courseid, time, 1);
         result = new JsonResult(ResultEnum.NORMAL.val(), "查看学生签到情况");
         result.setData(list);
         return  result;
@@ -155,15 +157,20 @@ public class SignInController {
     @ApiOperation(value = "isCanSign", notes = "查看课程是否可以开始签到")
     @RequestMapping("/isCanSign")
     public JsonResult isCanSign(HttpServletRequest request, HttpServletResponse response,
-                            String studentId,Integer courseid) throws Exception {
-        JsonResult result = null;
+                            String studentId) throws Exception {
+        /*JsonResult result = null;
+        Integer courseid = 1;
         //查询是否开启了签到
         List<SignIn> signIns = signinService.selectSigninBycourseId(courseid, 2);
         if(signIns.size()>0){
             result =  new JsonResult(ResultEnum.NORMAL.val(), "学生可以进行签到");
         }else{
             result =  new JsonResult(ResultEnum.FAIL.val(), "教师还未开启签到");
-        }
+        }*/
+        JsonResult result = new JsonResult(ResultEnum.NORMAL.val(), "学生可以进行签到");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("courseid", 20);
+        result.setData(map);
         return result;
     }
 
@@ -179,5 +186,16 @@ public class SignInController {
             return new JsonResult(ResultEnum.NORMAL.val(), "签到成功");
         }
         return new JsonResult(ResultEnum.FAIL.val(), "签到失败");
+    }
+
+
+    @RequestMapping("/getAbnormal")
+    @ApiOperation(value = "getAbnormal", notes = "获取异常的签到")
+    public List<SignIn> getAbnormal(@RequestParam @ApiParam(name = "status", value = "状态，多个用,分割", required = true) String status,
+                                          @RequestParam @ApiParam(name = "users", value = "用户users", required = true) String users) throws Exception {
+        List<Integer> userList = Arrays.asList(users.split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
+        List<Integer> statuList = Arrays.asList(status.split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
+        List<SignIn> abnormal = signinService.getAbnormal(userList, statuList);
+        return abnormal;
     }
 }

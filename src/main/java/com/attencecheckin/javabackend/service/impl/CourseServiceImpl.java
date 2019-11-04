@@ -128,13 +128,15 @@ public class CourseServiceImpl extends AbstractBaseServiceImpl<Course,Integer> i
         return courseMapper.deleteByExample(example);
     }
 
+    public List<Course>getListByExample(CourseExample example){
 
+        return null;
+    }
     public Course getCourseByTeacheridAndTime(Integer teacherId,String time){
         List<Course> courses = courseMapper.selectCourseByTeacheridAndTime(teacherId,time);
         if(courses.size()<=0){
             return null;
         }
         return courses.get(0);
-
     }
 }

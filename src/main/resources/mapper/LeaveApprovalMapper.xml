@@ -87,7 +87,7 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from leaveapproval
     where id = #{id,jdbcType=INTEGER}
@@ -103,11 +103,11 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.attencecheckin.javabackend.entity.LeaveApproval" >
-    insert into leaveapproval (id, studentId, leaveReason, 
-      status, courseId, leaveSubTime, 
+    insert into leaveapproval (id, studentId, leaveReason,
+      status, courseId, leaveSubTime,
       approvalTime)
-    values (#{id,jdbcType=INTEGER}, #{studentid,jdbcType=INTEGER}, #{leavereason,jdbcType=VARCHAR}, 
-      #{status,jdbcType=INTEGER}, #{courseid,jdbcType=INTEGER}, #{leavesubtime,jdbcType=TIMESTAMP}, 
+    values (#{id,jdbcType=INTEGER}, #{studentid,jdbcType=INTEGER}, #{leavereason,jdbcType=VARCHAR},
+      #{status,jdbcType=INTEGER}, #{courseid,jdbcType=INTEGER}, #{leavesubtime,jdbcType=TIMESTAMP},
       #{approvaltime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.attencecheckin.javabackend.entity.LeaveApproval" >

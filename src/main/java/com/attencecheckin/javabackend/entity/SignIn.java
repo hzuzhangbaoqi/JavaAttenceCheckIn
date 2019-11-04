@@ -15,7 +15,7 @@ public class SignIn implements BaseArg {
     @ApiModelProperty(value = "签到学生ID", name="studentid", dataType="Integer", required=false, hidden=false)
     private Integer studentid;
     @ApiModelProperty(value = "签到时间", name="signtime", dataType="Date", required=false, hidden=false,example = "2018-01-01 00:00:01")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern="yyyy-MM-dd hh:mm:ss")
     private Date signtime;
     @ApiModelProperty(value = "签到状态 0未签到 1已签到 2请假 3旷课", name="status", dataType="Integer", required=false, hidden=false)
     private Integer status;

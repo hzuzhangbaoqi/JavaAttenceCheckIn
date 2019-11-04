@@ -162,4 +162,8 @@
     set className = #{classname,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectKV" resultType="map" >
+    select id 'value' ,className 'label' from classinfo
+  </select>
+
 </mapper>

@@ -122,4 +122,13 @@ public class StudentServiceImpl extends AbstractBaseServiceImpl<Student,Integer>
         criteria.andIdIn(Arrays.asList(ids));
         return studentMapper.deleteByExample(example);
     }
+
+    public int bindClassinfo(Integer classid,List<Integer> studentList){
+        StudentExample example = new StudentExample();
+        StudentExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIn(studentList);
+        Student student = new Student();
+        student.setClassid(classid);
+        return studentMapper.updateByExampleSelective(student, example);
+    }
 }

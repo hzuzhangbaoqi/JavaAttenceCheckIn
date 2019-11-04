@@ -134,9 +134,9 @@ public class SigninServiceImpl extends AbstractBaseServiceImpl<SignIn,Integer> i
         SignInExample.Criteria criteria = example.createCriteria();
         criteria.andCourseidEqualTo(courseid);
         criteria.andSigntypeEqualTo(type);
-        Date date1 = DateUtils.parseDate(DateUtils.formatDate(new Date(), "yyyy-MM-dd") + " 00:00:00", new String[]{"yyyy-MM-dd HH:mm:ss"});
+        Date date1 = DateUtils.parseDate(DateUtils.formatDate(new Date(), "yyyy-MM-dd") + " 00:00:00", new String[]{"yyyy-MM-dd hh:mm:ss"});
         criteria.andSigntimeGreaterThanOrEqualTo(date1);
-        Date date2 = DateUtils.parseDate(DateUtils.formatDate(new Date(), "yyyy-MM-dd") + " 23:59:59", new String[]{"yyyy-MM-dd HH:mm:ss"});
+        Date date2 = DateUtils.parseDate(DateUtils.formatDate(new Date(), "yyyy-MM-dd") + " 23:59:59", new String[]{"yyyy-MM-dd hh:mm:ss"});
         criteria.andSigntimeLessThanOrEqualTo(date2);
         return signInMapper.selectByExample(example);
     }
@@ -147,6 +147,11 @@ public class SigninServiceImpl extends AbstractBaseServiceImpl<SignIn,Integer> i
         SignInExample.Criteria criteria = example.createCriteria();
         criteria.andStudentidEqualTo(studentid);
         criteria.andCourseidEqualTo(courseid);
+        Date date1 = DateUtils.parseDate(DateUtils.formatDate(new Date(), "yyyy-MM-dd") + " 00:00:00", new String[]{"yyyy-MM-dd hh:mm:ss"});
+        criteria.andSigntimeGreaterThanOrEqualTo(date1);
+        Date date2 = DateUtils.parseDate(DateUtils.formatDate(new Date(), "yyyy-MM-dd") + " 23:59:59", new String[]{"yyyy-MM-dd hh:mm:ss"});
+        criteria.andSigntimeLessThanOrEqualTo(date2);
+        //TODO 这里加一个当天的查询
         SignIn signIn = new SignIn();
         signIn.setSigntime(new Date());
         signIn.setStatus(1);
@@ -158,4 +163,12 @@ public class SigninServiceImpl extends AbstractBaseServiceImpl<SignIn,Integer> i
     public List<SignIn> showSignin(Integer courseid,String time,Integer signtype) throws DataAccessException {
         return signInMapper.showSignin(courseid,time,signtype);
     }
+    public List<SignIn> getAbnormal(List<Integer> users,List<Integer> status) throws DataAccessException {
+        SignInExample example = new SignInExample();
+        SignInExample.Criteria criteria = example.createCriteria();
+        criteria.andStatusIn(status);
+        criteria.andStudentidIn(users);
+        return signInMapper.selectByExample(example);
+    }
+
 }

@@ -28,8 +28,8 @@ public class CourseController {
     @RequestMapping("/insert")
     @ApiOperation(value = "insert", notes = "增加一条数据")
     public JsonResult<Integer> insert(Course course) throws Exception{
-      /*course.setId(ApplicationUtils.getUUID());*/
-       courseService.save(course);
+        /*course.setId(ApplicationUtils.getUUID());*/
+        courseService.save(course);
         return new JsonResult<Integer>(1);
     }
     @RequestMapping("/deleteById")
@@ -61,11 +61,13 @@ public class CourseController {
      */
     @RequestMapping("/list")
     @ApiOperation(value = "list", notes = "批量查询")
-    public JsonResult<PageInfo<Course>> list(@RequestParam(defaultValue = "0")@ApiParam(name = "page", value = "页数", required = true) Integer page,
-                                             @RequestParam(defaultValue = "0")@ApiParam(name = "size", value = "行数", required = true) Integer size) throws Exception {
+    public PageInfo<Course> list(@RequestParam(defaultValue = "0")@ApiParam(name = "page", value = "页数", required = true) Integer page,
+                                 @RequestParam(defaultValue = "0")@ApiParam(name = "size", value = "行数", required = true) Integer size) throws Exception {
         PageHelper.startPage(page, size);
         List<Course> list = courseService.getAllList();
         PageInfo<Course> pageInfo = new PageInfo<Course>(list);
-        return new JsonResult<PageInfo<Course>>(pageInfo);
+        return pageInfo;
     }
+
+
 }

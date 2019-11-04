@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
 * @Description: ClassInfoService接口实现类
@@ -125,5 +126,9 @@ public class ClassInfoServiceImpl extends AbstractBaseServiceImpl<ClassInfo,Inte
         ClassInfoExample.Criteria criteria = example.createCriteria();
         criteria.andIdIn(Arrays.asList(ids));
         return classinfoMapper.deleteByExample(example);
+    }
+
+    public List<Map<String,Object>> selectKV(){
+        return  classinfoMapper.selectKV();
     }
 }

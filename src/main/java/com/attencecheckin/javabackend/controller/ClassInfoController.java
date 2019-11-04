@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
 * @Description: ClassInfoController类
@@ -68,5 +69,10 @@ public class ClassInfoController {
         List<ClassInfo> list = classinfoService.getAllList();
         PageInfo<ClassInfo> pageInfo = new PageInfo<ClassInfo>(list);
         return pageInfo;
+    }
+    @RequestMapping("/selectKV")
+    @ApiOperation(value = "selectKV", notes = "按下拉框的格式查询班级信息")
+    public  List<Map<String,Object>> selectKV(){
+        return  classinfoService.selectKV();
     }
 }

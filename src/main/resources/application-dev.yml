@@ -18,7 +18,7 @@ wx:
 spring:
     datasource:
         name: test
-        url: jdbc:mysql://118.89.188.137:3306/attencecheck?useSSL=false&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&autoReconnect=true&failOverReadOnly=false&serverTimezone=UTC
+        url: jdbc:mysql://118.89.188.137:3306/attencecheck?useSSL=false&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&autoReconnect=true&failOverReadOnly=false&serverTimezone=GMT%2B8
         username: root
         password: Admin123!
         driver-class-name: com.mysql.cj.jdbc.Driver

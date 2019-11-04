@@ -3,6 +3,7 @@ package com.attencecheckin.javabackend.dao;
 import com.attencecheckin.javabackend.entity.ClassInfo;
 import com.attencecheckin.javabackend.entity.ClassInfoExample;
 import java.util.List;
+import java.util.Map;
 
 import com.attencecheckin.javabackend.entity.ClassRoom;
 import org.apache.ibatis.annotations.Param;
@@ -29,4 +30,5 @@ public interface ClassInfoMapper extends BaseDAO<ClassInfo, Integer>{
     int updateByPrimaryKeySelective(ClassInfo record);
 
     int updateByPrimaryKey(ClassInfo record);
+    List<Map<String,Object>> selectKV();
 }
