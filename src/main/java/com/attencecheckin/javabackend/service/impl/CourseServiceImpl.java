@@ -11,6 +11,7 @@ import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
 * @Description: CourseService接口实现类
@@ -73,7 +74,7 @@ public class CourseServiceImpl extends AbstractBaseServiceImpl<Course,Integer> i
         CourseExample example = new CourseExample();
         CourseExample.Criteria criteria = example.createCriteria();
         criteria.andIdEqualTo(entity.getId());
-        return courseMapper.updateByExample(entity, example);
+        return courseMapper.updateByExampleSelective(entity, example);
     }
 
     /**
@@ -138,5 +139,8 @@ public class CourseServiceImpl extends AbstractBaseServiceImpl<Course,Integer> i
             return null;
         }
         return courses.get(0);
+    }
+    public List<Map<String,Object>> getCourseByDate(String e){
+        return courseMapper.getCourseByDate(e);
     }
 }

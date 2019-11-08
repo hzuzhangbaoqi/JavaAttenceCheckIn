@@ -3,13 +3,10 @@ package com.attencecheckin.javabackend.controller;
 
 import com.attencecheckin.javabackend.common.JsonResult;
 import com.attencecheckin.javabackend.common.enumer.ResultEnum;
-import com.attencecheckin.javabackend.dao.SignInMapper;
 import com.attencecheckin.javabackend.entity.Course;
-import com.attencecheckin.javabackend.entity.CourseExample;
 import com.attencecheckin.javabackend.entity.SignIn;
-import com.attencecheckin.javabackend.entity.SignInExample;
 import com.attencecheckin.javabackend.service.CourseService;
-import com.attencecheckin.javabackend.service.StudentcourseService;
+import com.attencecheckin.javabackend.service.StudentService;
 import com.attencecheckin.javabackend.util.DistanceUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -40,11 +37,12 @@ public class SignInController {
 
     @Resource
     private SigninService signinService;
-    @Resource
-    private StudentcourseService studentcourseService;
 
     @Resource
     private CourseService courseService;
+
+    @Resource
+    private StudentService studentService;
 
     @PostMapping("/insert")
     @ApiOperation(value = "insert", notes = "增加一条数据")
@@ -120,7 +118,8 @@ public class SignInController {
                     signIn.setSigntype(2);
                     SignIn save = signinService.save(signIn);
                     //记录学生的未签记录
-                    List<Integer> studentids = studentcourseService.getStudentidsByCourse(course.getId());
+                    List<String> courseids = Arrays.asList((course.getId() + "").split(","));
+                    List<Integer> studentids = studentService.getStudentidsByCourse(courseids);
                     for (Integer studentid : studentids) {
                         SignIn studentSignIn = new SignIn();
                         studentSignIn.setSigntime(new Date());

@@ -284,4 +284,9 @@
     STR_TO_DATE(CONCAT(DATE_FORMAT(now(),'%Y-%m-%d '),DATE_FORMAT(str_to_date(#{time}, '%Y-%m-%d %H:%i:%s'),'%T') ),'%Y-%m-%d %H:%i:%s')
     and week = date_format(str_to_date(#{time}, '%Y-%m-%d %H:%i:%s'),'%w')
   </select>
+
+  <select id="getCourseByDate" resultType="map">
+    select id ,concat('第',jieci,'节次：',courseName) as 'name'from course where week = #{week}
+  </select>
+
 </mapper>

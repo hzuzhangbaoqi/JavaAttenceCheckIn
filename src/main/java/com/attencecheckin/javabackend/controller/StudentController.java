@@ -64,11 +64,11 @@ public class StudentController {
      */
     @RequestMapping("/list")
     @ApiOperation(value = "list", notes = "批量查询")
-    public PageInfo<Student> list(@RequestParam(defaultValue = "0")@ApiParam(name = "page", value = "页数", required = true) Integer page,
-                                              @RequestParam(defaultValue = "0")@ApiParam(name = "size", value = "行数", required = true) Integer size) throws Exception {
-        PageHelper.startPage(page, size);
-        List<Student> list = studentService.getAllList();
-        PageInfo<Student> pageInfo = new PageInfo<Student>(list);
+        public PageInfo<Student> list(@RequestParam(defaultValue = "0")@ApiParam(name = "page", value = "页数", required = true) Integer page,
+                @RequestParam(defaultValue = "0")@ApiParam(name = "size", value = "行数", required = true) Integer size) throws Exception {
+            PageHelper.startPage(page, size);
+            List<Student> list = studentService.getAllList();
+            PageInfo<Student> pageInfo = new PageInfo<Student>(list);
         return pageInfo;
     }
 
@@ -77,7 +77,8 @@ public class StudentController {
     public JsonResult list(Integer classid,String students) throws Exception {
         List<Integer> studentsList = Arrays.asList(students.split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
         //TODO 绑定班级
-
-        return new JsonResult();
+        int bindClassinfo = studentService.bindClassinfo(classid, studentsList);
+        JsonResult result = new JsonResult<Integer>(bindClassinfo);
+        return result;
     }
 }

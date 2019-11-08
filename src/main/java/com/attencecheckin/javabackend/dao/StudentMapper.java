@@ -28,4 +28,6 @@ public interface StudentMapper  extends BaseDAO<Student,Integer> {
     int updateByPrimaryKeySelective(Student record);
 
     int updateByPrimaryKey(Student record);
+
+    List<Student> getStudentidsByCourse(@Param("courseids") List<String>courseids);
 }

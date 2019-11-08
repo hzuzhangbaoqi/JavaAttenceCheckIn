@@ -3,6 +3,8 @@ package com.attencecheckin.javabackend.service.impl;
 import com.attencecheckin.javabackend.dao.StudentMapper;
 import com.attencecheckin.javabackend.entity.Student;
 import com.attencecheckin.javabackend.entity.StudentExample;
+import com.attencecheckin.javabackend.entity.Studentcourse;
+import com.attencecheckin.javabackend.entity.StudentcourseExample;
 import com.attencecheckin.javabackend.service.StudentService;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
 * @Description: StudentService接口实现类
@@ -130,5 +133,11 @@ public class StudentServiceImpl extends AbstractBaseServiceImpl<Student,Integer>
         Student student = new Student();
         student.setClassid(classid);
         return studentMapper.updateByExampleSelective(student, example);
+    }
+
+    public List<Integer> getStudentidsByCourse(List<String> courseids){
+        List<Student> studentcourses = studentMapper.getStudentidsByCourse(courseids);
+        List<Integer> studentids=studentcourses.stream().map(Student::getId).collect(Collectors.toList());
+        return studentids;
     }
 }

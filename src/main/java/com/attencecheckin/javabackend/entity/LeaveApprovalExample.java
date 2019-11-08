@@ -541,6 +541,75 @@ public class LeaveApprovalExample implements BaseArg {
             addCriterion("approvalTime not between", value1, value2, "approvaltime");
             return (Criteria) this;
         }
+        public Criteria andLeavedateIsNull() {
+            addCriterion("leavedate is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeavedateIsNotNull() {
+            addCriterion("leavedate is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeavedateEqualTo(String value) {
+            addCriterion("leavedate =", value, "leavedate");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeavedateNotEqualTo(String value) {
+            addCriterion("leavedate <>", value, "leavedate");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeavedateGreaterThan(String value) {
+            addCriterion("leavedate >", value, "leavedate");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeavedateGreaterThanOrEqualTo(String value) {
+            addCriterion("leavedate >=", value, "leavedate");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeavedateLessThan(String value) {
+            addCriterion("leavedate <", value, "leavedate");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeavedateLessThanOrEqualTo(String value) {
+            addCriterion("leavedate <=", value, "leavedate");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeavedateLike(String value) {
+            addCriterion("leavedate like", value, "leavedate");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeavedateNotLike(String value) {
+            addCriterion("leavedate not like", value, "leavedate");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeavedateIn(List<String> values) {
+            addCriterion("leavedate in", values, "leavedate");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeavedateNotIn(List<String> values) {
+            addCriterion("leavedate not in", values, "leavedate");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeavedateBetween(String value1, String value2) {
+            addCriterion("leavedate between", value1, value2, "leavedate");
+            return (Criteria) this;
+        }
+
+        public Criteria andLeavedateNotBetween(String value1, String value2) {
+            addCriterion("leavedate not between", value1, value2, "leavedate");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

@@ -151,7 +151,6 @@ public class SigninServiceImpl extends AbstractBaseServiceImpl<SignIn,Integer> i
         criteria.andSigntimeGreaterThanOrEqualTo(date1);
         Date date2 = DateUtils.parseDate(DateUtils.formatDate(new Date(), "yyyy-MM-dd") + " 23:59:59", new String[]{"yyyy-MM-dd hh:mm:ss"});
         criteria.andSigntimeLessThanOrEqualTo(date2);
-        //TODO 这里加一个当天的查询
         SignIn signIn = new SignIn();
         signIn.setSigntime(new Date());
         signIn.setStatus(1);

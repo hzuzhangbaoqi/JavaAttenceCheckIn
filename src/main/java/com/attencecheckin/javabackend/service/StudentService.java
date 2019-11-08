@@ -12,5 +12,6 @@ import java.util.List;
 */
 public interface StudentService extends BaseService<Student,Integer> {
     int bindClassinfo(Integer classid,List<Integer> studentList);
+    List<Integer> getStudentidsByCourse(List<String> courseids);
 
 }

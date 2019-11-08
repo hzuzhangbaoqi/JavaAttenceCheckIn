@@ -304,4 +304,12 @@
       updateTime = #{updatetime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="getStudentidsByCourse"   resultMap="BaseResultMap">
+    select s.* from student s,course c where c.id
+    <foreach close=")" collection="courseids" item="courseid" open="(" separator=",">
+      #{courseid}
+    </foreach>
+    and c.classid=s.classid
+  </select>
 </mapper>

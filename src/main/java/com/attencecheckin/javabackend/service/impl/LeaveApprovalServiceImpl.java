@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
 * @Description: LeaveApprovalService接口实现类
@@ -63,7 +64,18 @@ public class LeaveApprovalServiceImpl extends AbstractBaseServiceImpl<LeaveAppro
         leaveapprovalMapper.insertSelective(entity);
         return entity;
     }
-
+    public LeaveApproval findByDateAndcourseid(Integer studentid,String date,Integer courseid) {
+        LeaveApprovalExample example = new LeaveApprovalExample();
+        LeaveApprovalExample.Criteria criteria = example.createCriteria();
+        criteria.andLeavedateEqualTo(date);
+        criteria.andCourseidEqualTo(courseid);
+        criteria.andStudentidEqualTo(studentid);
+        List<LeaveApproval> leaveApprovals = leaveapprovalMapper.selectByExample(example);
+        if(leaveApprovals.size()>0){
+            return  leaveApprovals.get(0);
+        }
+        return null;
+    }
     /**
      * 保存修改Entity
      * @param entity
@@ -125,5 +137,23 @@ public class LeaveApprovalServiceImpl extends AbstractBaseServiceImpl<LeaveAppro
         LeaveApprovalExample.Criteria criteria = example.createCriteria();
         criteria.andIdIn(Arrays.asList(ids));
         return leaveapprovalMapper.deleteByExample(example);
+    }
+
+    public List<LeaveApproval> showleaveCourseByTeacherid(Integer teacherid){
+        return leaveapprovalMapper.showleaveCourseByTeacherid(teacherid);
+    }
+
+    public int agreeleaveCourseByTeacherid(Integer teacher,List<Integer> ids){
+        LeaveApprovalExample example = new LeaveApprovalExample();
+        LeaveApprovalExample.Criteria criteria = example.createCriteria();
+        criteria.andIdIn(ids);
+        LeaveApproval leaveApproval = new LeaveApproval();
+        leaveApproval.setStatus(1);
+        return leaveapprovalMapper.updateByExampleSelective(leaveApproval, example);
+    }
+    public List<Map<String,Object>>  getCourseByStudent(Integer studentid,List<Integer> status){
+
+        List<Map<String,Object>> leaveApprovals = leaveapprovalMapper.getCourseByStudent(studentid, status);;
+        return leaveApprovals;
     }
 }

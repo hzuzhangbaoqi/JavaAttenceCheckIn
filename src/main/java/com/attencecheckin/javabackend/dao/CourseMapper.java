@@ -5,6 +5,7 @@ import com.attencecheckin.javabackend.entity.CourseExample;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.attencecheckin.javabackend.entity.LeaveApproval;
 import org.apache.ibatis.annotations.Param;
@@ -33,4 +34,5 @@ public interface CourseMapper extends BaseDAO<Course, Integer>{
     int updateByPrimaryKey(Course record);
 
     List<Course> selectCourseByTeacheridAndTime(@Param("teacherid") Integer teacherid,@Param("time")String time);
+    List<Map<String,Object>> getCourseByDate(@Param("week") String week);
 }

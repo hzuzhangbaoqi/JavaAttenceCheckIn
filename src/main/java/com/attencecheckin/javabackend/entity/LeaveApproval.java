@@ -27,6 +27,8 @@ public class LeaveApproval implements BaseArg {
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date approvaltime;
 
+    private String leavedate;
+
     @Override
     public void checkArgs() {
 

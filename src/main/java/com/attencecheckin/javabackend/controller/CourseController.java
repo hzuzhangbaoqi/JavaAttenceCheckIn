@@ -7,10 +7,16 @@ import com.attencecheckin.javabackend.service.CourseService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.*;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
 * @Description: CourseController类
@@ -29,6 +35,22 @@ public class CourseController {
     @ApiOperation(value = "insert", notes = "增加一条数据")
     public JsonResult<Integer> insert(Course course) throws Exception{
         /*course.setId(ApplicationUtils.getUUID());*/
+        if(1==course.getJieci()){
+            course.setCoursestarttime(DateUtils.parseDate("08:00:00", new String[]{"hh:mm:ss"}));
+            course.setCourseendtime(DateUtils.parseDate("09:45:00", new String[]{"hh:mm:ss"}));
+        }else if(2==course.getJieci()){
+            course.setCoursestarttime(DateUtils.parseDate("10:00:00", new String[]{"hh:mm:ss"}));
+            course.setCourseendtime(DateUtils.parseDate("11:45:00", new String[]{"hh:mm:ss"}));
+        }else if(3==course.getJieci()){
+            course.setCoursestarttime(DateUtils.parseDate("14:00:00", new String[]{"hh:mm:ss"}));
+            course.setCourseendtime(DateUtils.parseDate("15:45:00", new String[]{"hh:mm:ss"}));
+        }else if(4==course.getJieci()){
+            course.setCoursestarttime(DateUtils.parseDate("16:00:00", new String[]{"hh:mm:ss"}));
+            course.setCourseendtime(DateUtils.parseDate("17:45:00", new String[]{"hh:mm:ss"}));
+        }else if(5==course.getJieci()){
+            course.setCoursestarttime(DateUtils.parseDate("18:00:00", new String[]{"hh:mm:ss"}));
+            course.setCourseendtime(DateUtils.parseDate("23:45:00", new String[]{"hh:mm:ss"}));
+        }
         courseService.save(course);
         return new JsonResult<Integer>(1);
     }
@@ -42,6 +64,25 @@ public class CourseController {
     @RequestMapping("/update")
     @ApiOperation(value = "update", notes = "更新数据")
     public JsonResult<Integer> update(Course course) throws Exception {
+
+        if(course.getJieci()!=null){
+            if(1==course.getJieci()){
+                course.setCoursestarttime(DateUtils.parseDate("08:00:00", new String[]{"hh:mm:ss"}));
+                course.setCourseendtime(DateUtils.parseDate("09:45:00", new String[]{"hh:mm:ss"}));
+            }else if(2==course.getJieci()){
+                course.setCoursestarttime(DateUtils.parseDate("10:00:00", new String[]{"hh:mm:ss"}));
+                course.setCourseendtime(DateUtils.parseDate("11:45:00", new String[]{"hh:mm:ss"}));
+            }else if(3==course.getJieci()){
+                course.setCoursestarttime(DateUtils.parseDate("14:00:00", new String[]{"hh:mm:ss"}));
+                course.setCourseendtime(DateUtils.parseDate("15:45:00", new String[]{"hh:mm:ss"}));
+            }else if(4==course.getJieci()){
+                course.setCoursestarttime(DateUtils.parseDate("16:00:00", new String[]{"hh:mm:ss"}));
+                course.setCourseendtime(DateUtils.parseDate("17:45:00", new String[]{"hh:mm:ss"}));
+            }else if(5==course.getJieci()){
+                course.setCoursestarttime(DateUtils.parseDate("18:00:00", new String[]{"hh:mm:ss"}));
+                course.setCourseendtime(DateUtils.parseDate("23:45:00", new String[]{"hh:mm:ss"}));
+            }
+        }
         Integer state = courseService.update(course);
         return new JsonResult<Integer>(state);
     }
@@ -68,6 +109,21 @@ public class CourseController {
         PageInfo<Course> pageInfo = new PageInfo<Course>(list);
         return pageInfo;
     }
+    @RequestMapping("/getCourseByDate")
+    @ApiOperation(value = "getCourseByDate", notes = "根据日期获取当天的课程")
+    public List<Map<String,Object>> getCourseByDate(String date) throws ParseException {
 
+        Date time = DateUtils.parseDate(date, "yyyy-MM-dd");
+        String e = DateFormatUtils.format(time, "E");
+        if(e.equals("星期一")){ e="1";}
+        else if(e.equals("星期二")){ e="2";}
+        else if(e.equals("星期三")){ e="3";}
+        else if(e.equals("星期四")){ e="4";}
+        else if(e.equals("星期五")){ e="5";}
+        else if(e.equals("星期六")){ e="6";}
+        else if(e.equals("星期日")){ e="0";}
+        List<Map<String, Object>> courseByDate = courseService.getCourseByDate(e);
+        return courseByDate;
+    }
 
 }

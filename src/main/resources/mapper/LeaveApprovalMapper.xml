@@ -9,6 +9,7 @@
     <result column="courseId" property="courseid" jdbcType="INTEGER" />
     <result column="leaveSubTime" property="leavesubtime" jdbcType="TIMESTAMP" />
     <result column="approvalTime" property="approvaltime" jdbcType="TIMESTAMP" />
+    <result column="leavedate" property="leavedate" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -69,7 +70,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, studentId, leaveReason, status, courseId, leaveSubTime, approvalTime
+    id, studentId, leaveReason, status, courseId, leaveSubTime, approvalTime, leavedate
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.attencecheckin.javabackend.entity.LeaveApprovalExample" >
     select
@@ -105,10 +106,10 @@
   <insert id="insert" parameterType="com.attencecheckin.javabackend.entity.LeaveApproval" >
     insert into leaveapproval (id, studentId, leaveReason,
       status, courseId, leaveSubTime,
-      approvalTime)
+      approvalTime, leavedate)
     values (#{id,jdbcType=INTEGER}, #{studentid,jdbcType=INTEGER}, #{leavereason,jdbcType=VARCHAR},
       #{status,jdbcType=INTEGER}, #{courseid,jdbcType=INTEGER}, #{leavesubtime,jdbcType=TIMESTAMP},
-      #{approvaltime,jdbcType=TIMESTAMP})
+      #{approvaltime,jdbcType=TIMESTAMP}, #{leavedate,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.attencecheckin.javabackend.entity.LeaveApproval" >
     insert into leaveapproval
@@ -134,6 +135,9 @@
       <if test="approvaltime != null" >
         approvalTime,
       </if>
+      <if test="leavedate != null" >
+        leavedate,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -156,6 +160,9 @@
       </if>
       <if test="approvaltime != null" >
         #{approvaltime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="leavedate != null" >
+        #{leavedate,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -189,6 +196,9 @@
       <if test="record.approvaltime != null" >
         approvalTime = #{record.approvaltime,jdbcType=TIMESTAMP},
       </if>
+      <if test="record.leavedate != null" >
+        leavedate = #{record.leavedate,jdbcType=VARCHAR},
+      </if>
     </set>
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
@@ -197,12 +207,13 @@
   <update id="updateByExample" parameterType="map" >
     update leaveapproval
     set id = #{record.id,jdbcType=INTEGER},
-      studentId = #{record.studentid,jdbcType=INTEGER},
-      leaveReason = #{record.leavereason,jdbcType=VARCHAR},
-      status = #{record.status,jdbcType=INTEGER},
-      courseId = #{record.courseid,jdbcType=INTEGER},
-      leaveSubTime = #{record.leavesubtime,jdbcType=TIMESTAMP},
-      approvalTime = #{record.approvaltime,jdbcType=TIMESTAMP}
+    studentId = #{record.studentid,jdbcType=INTEGER},
+    leaveReason = #{record.leavereason,jdbcType=VARCHAR},
+    status = #{record.status,jdbcType=INTEGER},
+    courseId = #{record.courseid,jdbcType=INTEGER},
+    leaveSubTime = #{record.leavesubtime,jdbcType=TIMESTAMP},
+    approvalTime = #{record.approvaltime,jdbcType=TIMESTAMP},
+    leavedate = #{record.leavedate,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -228,6 +239,9 @@
       <if test="approvaltime != null" >
         approvalTime = #{approvaltime,jdbcType=TIMESTAMP},
       </if>
+      <if test="leavedate != null" >
+        leavedate = #{leavedate,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -238,7 +252,26 @@
       status = #{status,jdbcType=INTEGER},
       courseId = #{courseid,jdbcType=INTEGER},
       leaveSubTime = #{leavesubtime,jdbcType=TIMESTAMP},
-      approvalTime = #{approvaltime,jdbcType=TIMESTAMP}
+      approvalTime = #{approvaltime,jdbcType=TIMESTAMP},
+      leavedate = #{leavedate,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="showleaveCourseByTeacherid">
+    select l.* from course c,leaveapproval l where c.id = l.courseId
+    <if test="teacherid!=null">
+      and teacherid = #{teacherid}
+    </if>
+  </select>
+
+  <select id="getCourseByStudent" resultType="map">
+    select l.*,DATE_FORMAT(c.courseStartTime,'%T') courseStart,DATE_FORMAT(c.courseEndTime,'%T') courseEnd ,concat('第',c.jieci,'节次：',c.courseName) as 'name'from leaveapproval l,course c where c.id = l.courseId
+    and studentid = #{studentid}
+    <if  test="statusList!=null and statusList.size()>0" >
+      and status in
+      <foreach collection="statusList" item="status" open="(" close=")" separator="," >
+        #{status}
+      </foreach>
+    </if>
+  </select>
 </mapper>

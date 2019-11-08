@@ -3,6 +3,8 @@ package com.attencecheckin.javabackend.dao;
 import com.attencecheckin.javabackend.entity.LeaveApproval;
 import com.attencecheckin.javabackend.entity.LeaveApprovalExample;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface LeaveApprovalMapper  extends BaseDAO<LeaveApproval, Integer>{
@@ -27,4 +29,6 @@ public interface LeaveApprovalMapper  extends BaseDAO<LeaveApproval, Integer>{
     int updateByPrimaryKeySelective(LeaveApproval record);
 
     int updateByPrimaryKey(LeaveApproval record);
+    List<LeaveApproval> showleaveCourseByTeacherid(@Param("teacherid") Integer teacherid);
+    List<Map<String,Object>> getCourseByStudent(@Param("studentid") Integer studentid, @Param("statusList") List<Integer> statusList);
 }
