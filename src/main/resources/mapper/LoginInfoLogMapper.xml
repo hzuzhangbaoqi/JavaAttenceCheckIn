@@ -256,4 +256,14 @@
       macName = #{macname,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="getLogininfoByWeek" resultType="map">
+      select DATE_FORMAT(loginTime,'%Y-%m-%d') logintime,count(1) 'count' from logininfolog
+      where
+      DATE_FORMAT(loginTime,'%m-%d')<![CDATA[ <= ]]> DATE_FORMAT(now(),'%m-%d')
+      and
+      DATE_FORMAT(loginTime,'%m-%d') <![CDATA[ >= ]]> DATE_FORMAT(date_add(now(),  INTERVAL -6 DAY),'%m-%d')
+      group by DATE_FORMAT(loginTime,'%Y-%m-%d')
+      order by DATE_FORMAT(loginTime,'%Y-%m-%d')
+  </select>
 </mapper>

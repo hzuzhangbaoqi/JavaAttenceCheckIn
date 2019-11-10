@@ -14,7 +14,7 @@ import java.util.Map;
 public interface LeaveApprovalService extends BaseService<LeaveApproval,Integer> {
 
     LeaveApproval findByDateAndcourseid(Integer studentid,String date,Integer courseid);
-    List<LeaveApproval> showleaveCourseByTeacherid(Integer teacherid);
-    int agreeleaveCourseByTeacherid(Integer teacherid,List<Integer> ids);
+    List<Map<String,Object>> showleaveCourseByTeacherid(Integer teacherid);
+    int agreeleaveCourseByTeacherid(Integer teacherid,List<Integer> ids,Integer isAgree);
     List<Map<String,Object>> getCourseByStudent(Integer studentid, List<Integer> status);
 }

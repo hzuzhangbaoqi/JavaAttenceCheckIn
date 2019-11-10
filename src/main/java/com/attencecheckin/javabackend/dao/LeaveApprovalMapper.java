@@ -29,6 +29,6 @@ public interface LeaveApprovalMapper  extends BaseDAO<LeaveApproval, Integer>{
     int updateByPrimaryKeySelective(LeaveApproval record);
 
     int updateByPrimaryKey(LeaveApproval record);
-    List<LeaveApproval> showleaveCourseByTeacherid(@Param("teacherid") Integer teacherid);
+    List<Map<String,Object>> showleaveCourseByTeacherid(@Param("teacherid") Integer teacherid);
     List<Map<String,Object>> getCourseByStudent(@Param("studentid") Integer studentid, @Param("statusList") List<Integer> statusList);
 }

@@ -26,28 +26,28 @@ public class TeacherController {
     @Resource
     private TeacherService teacherService;
 
-    @PostMapping("/insert")
+    @RequestMapping("/insert")
     @ApiOperation(value = "insert", notes = "增加一条数据")
     public JsonResult<Integer> insert(Teacher teacher) throws Exception{
 
         teacherService.save(teacher);
         return new JsonResult<Integer>(1);
     }
-    @PostMapping("/deleteById")
+    @RequestMapping("/deleteById")
     @ApiOperation(value = "deleteById", notes = "根据id删除数据")
     public JsonResult<Integer> deleteById(@RequestParam @ApiParam(name = "id", value = "主键", required = true)Integer id) throws Exception {
         Integer state = teacherService.del(id);
         return new JsonResult<Integer>(state);
     }
 
-    @PostMapping("/update")
+    @RequestMapping("/update")
     @ApiOperation(value = "update", notes = "更新数据")
     public JsonResult<Integer> update(Teacher teacher) throws Exception {
         Integer state = teacherService.update(teacher);
         return new JsonResult<Integer>(state);
     }
 
-    @PostMapping("/selectById")
+    @RequestMapping("/selectById")
     @ApiOperation(value = "selectById", notes = "更加id查询")
     public JsonResult<Teacher> selectById(@RequestParam@ApiParam(name = "id", value = "主键", required = true) Integer id) throws Exception {
         Teacher teacher = teacherService.get(id);
@@ -60,7 +60,7 @@ public class TeacherController {
      * @param size 每页条数
      * @Reutrn JsonResult<PageInfo<Teacher>>
      */
-    @PostMapping("/list")
+    @RequestMapping("/list")
     @ApiOperation(value = "list", notes = "批量查询")
     public JsonResult<PageInfo<Teacher>> list(@RequestParam(defaultValue = "0")@ApiParam(name = "page", value = "页数", required = true) Integer page,
                                               @RequestParam(defaultValue = "0")@ApiParam(name = "size", value = "行数", required = true) Integer size) throws Exception {

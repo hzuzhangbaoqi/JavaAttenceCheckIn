@@ -3,7 +3,9 @@ package com.attencecheckin.javabackend.controller;
 
 import com.attencecheckin.javabackend.common.JsonResult;
 import com.attencecheckin.javabackend.entity.Course;
+import com.attencecheckin.javabackend.entity.Student;
 import com.attencecheckin.javabackend.service.CourseService;
+import com.attencecheckin.javabackend.service.StudentService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.*;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +33,8 @@ public class CourseController {
 
     @Resource
     private CourseService courseService;
+    @Resource
+    private StudentService studentService;
 
     @RequestMapping("/insert")
     @ApiOperation(value = "insert", notes = "增加一条数据")
@@ -125,5 +130,15 @@ public class CourseController {
         List<Map<String, Object>> courseByDate = courseService.getCourseByDate(e);
         return courseByDate;
     }
+    @RequestMapping("/getCourseByStudentid")
+    @ApiOperation(value = "getCourseByStudentid", notes = "根据日期获取当天的课程")
+    public List<Map<String,Object>> getCourseByStudentid(String studentid) throws ParseException {
+        Student student = studentService.get(Integer.parseInt(studentid));
+        if(student == null||student.getClassid()==null){return new ArrayList<Map<String,Object>>();}
+        List<Map<String, Object>> courseByDate = courseService.getCourseByStudentid(student.getClassid());
+        return courseByDate;
+    }
+
+
 
 }

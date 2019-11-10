@@ -3,6 +3,7 @@ package com.attencecheckin.javabackend.dao;
 import com.attencecheckin.javabackend.entity.LoginInfoLog;
 import com.attencecheckin.javabackend.entity.LoginInfoLogExample;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -28,4 +29,5 @@ public interface LoginInfoLogMapper extends BaseDAO<LoginInfoLog, Integer>{
     int updateByPrimaryKeySelective(LoginInfoLog record);
 
     int updateByPrimaryKey(LoginInfoLog record);
+    List<Map<String,Object>> getLogininfoByWeek();
 }

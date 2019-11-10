@@ -5,6 +5,7 @@ import com.attencecheckin.javabackend.common.JsonResult;
 import com.attencecheckin.javabackend.common.enumer.ResultEnum;
 import com.attencecheckin.javabackend.entity.Course;
 import com.attencecheckin.javabackend.entity.SignIn;
+import com.attencecheckin.javabackend.entity.Student;
 import com.attencecheckin.javabackend.service.CourseService;
 import com.attencecheckin.javabackend.service.StudentService;
 import com.attencecheckin.javabackend.util.DistanceUtils;
@@ -157,20 +158,86 @@ public class SignInController {
     @RequestMapping("/isCanSign")
     public JsonResult isCanSign(HttpServletRequest request, HttpServletResponse response,
                             String studentId) throws Exception {
-        /*JsonResult result = null;
-        Integer courseid = 1;
+        JsonResult result = null;
+        Date date = new Date();
+        String e = DateFormatUtils.format(date, "E");
+        if(e.equals("星期一")){ e="1";}
+        else if(e.equals("星期二")){ e="2";}
+        else if(e.equals("星期三")){ e="3";}
+        else if(e.equals("星期四")){ e="4";}
+        else if(e.equals("星期五")){ e="5";}
+        else if(e.equals("星期六")){ e="6";}
+        else if(e.equals("星期日")){ e="0";}
+        //判断当前时间段
+        String format = DateFormatUtils.format(date, "yyyy-MM-dd ");
+        Integer jieci = null;
+        if(belongCalendar(date, DateUtils.parseDate(format+"08:00:00", new String[]{"yyyy-MM-dd hh:mm:ss"})
+                , DateUtils.parseDate(format+"09:45:00", new String[]{"yyyy-MM-dd hh:mm:ss"}))){
+            jieci = 1;
+        }else if(belongCalendar(date, DateUtils.parseDate(format+"10:00:00", new String[]{"yyyy-MM-dd hh:mm:ss"})
+                , DateUtils.parseDate(format+"11:45:00", new String[]{"yyyy-MM-dd hh:mm:ss"}))){
+            jieci = 2;
+        }else if(belongCalendar(date, DateUtils.parseDate(format+"14:00:00", new String[]{"yyyy-MM-dd hh:mm:ss"})
+                , DateUtils.parseDate(format+"15:45:00", new String[]{"yyyy-MM-dd hh:mm:ss"}))){
+            jieci = 3;
+        }else if(belongCalendar(date, DateUtils.parseDate(format+"16:00:00", new String[]{"yyyy-MM-dd hh:mm:ss"})
+                , DateUtils.parseDate(format+"17:45:00", new String[]{"yyyy-MM-dd hh:mm:ss"}))){
+            jieci = 4;
+        }else if(belongCalendar(date, DateUtils.parseDate(format+"18:00:00", new String[]{"yyyy-MM-dd hh:mm:ss"})
+                , DateUtils.parseDate(format+"23:45:00", new String[]{"yyyy-MM-dd hh:mm:ss"}))){
+            jieci = 5;
+        }else{
+            result =  new JsonResult(ResultEnum.NOT_LOGIN.val(), "当前时段不再上课时间段内");
+            return result;
+
+        }
+        //有week和节次，查询courseid
+        Student student = studentService.get(Integer.parseInt(studentId));
+        if(student==null){
+            result =  new JsonResult(ResultEnum.NOT_LOGIN.val(), "学生信息不存在");
+            return result;
+        }
+        if(student.getClassid()==null){
+            result =  new JsonResult(ResultEnum.PARAMS_ERROR.val(), "学生班级不存在");
+            return result;
+        }
+        Course course = courseService.getCourseByWeekAndJieci(Integer.parseInt(e), jieci, student.getClassid());
+
         //查询是否开启了签到
-        List<SignIn> signIns = signinService.selectSigninBycourseId(courseid, 2);
+        List<SignIn> signIns = signinService.selectSigninBycourseId(course.getId(), 2);
         if(signIns.size()>0){
             result =  new JsonResult(ResultEnum.NORMAL.val(), "学生可以进行签到");
         }else{
             result =  new JsonResult(ResultEnum.FAIL.val(), "教师还未开启签到");
-        }*/
-        JsonResult result = new JsonResult(ResultEnum.NORMAL.val(), "学生可以进行签到");
+        }
         HashMap<String, Object> map = new HashMap<>();
-        map.put("courseid", 20);
+        map.put("courseid", course.getId());
         result.setData(map);
         return result;
+    }
+    /**
+     *判断时间是否在时间段内
+     *@paramnowTime
+     *@parambeginTime
+     *@paramendTime
+     *@return
+     */
+    public static boolean belongCalendar(Date nowTime,Date beginTime,Date endTime){
+    //设置当前时间
+        Calendar date=Calendar.getInstance();
+        date.setTime(nowTime);
+    //设置开始时间
+        Calendar begin=Calendar.getInstance();
+        begin.setTime(beginTime);
+        //设置结束时间
+        Calendar end=Calendar.getInstance();
+        end.setTime(endTime);
+        //处于开始时间之后，和结束时间之前的判断
+        if(date.after(begin)&&date.before(end)){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     @RequestMapping("/studentSign")
@@ -178,6 +245,9 @@ public class SignInController {
                                 Integer studentId,String location,Integer courseid) throws Exception {
         List<SignIn> signIns = signinService.selectSigninBycourseId(courseid, 2);
         //获取教师位置
+        if(signIns.size()<=0){
+            return new JsonResult(ResultEnum.NOT_DATA.val(), "单签没有需要签到的课程");
+        }
         SignIn signIn = signIns.get(0);
         double distance = DistanceUtils.getDistance(signIn.getSuslocation(), location);
         int studentSignin = signinService.studentSignin(studentId, courseid, location, distance > 300 ? 1 : 0);
@@ -197,4 +267,11 @@ public class SignInController {
         List<SignIn> abnormal = signinService.getAbnormal(userList, statuList);
         return abnormal;
     }
+    @RequestMapping("/getAttendanceStatistics")
+    @ApiOperation(value = "getAttendanceStatistics", notes = "获取异常的签到")
+    public List<Map<String, Object>> getAttendanceStatistics(String signtimeStart ,String signtimeEnd,Integer studentid) throws Exception {
+        List<Map<String, Object>> attendanceStatistics = signinService.getAttendanceStatistics(signtimeStart, signtimeEnd, studentid);
+        return attendanceStatistics;
+    }
+
 }

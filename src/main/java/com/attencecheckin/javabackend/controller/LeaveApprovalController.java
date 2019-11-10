@@ -99,7 +99,7 @@ public class LeaveApprovalController {
 
             LeaveApproval leaveApproval = new LeaveApproval();
             leaveApproval.setStudentid(studentId);
-            leaveApproval.setStudentid(0);
+            leaveApproval.setStatus(0);
             leaveApproval.setLeavereason(leaveReason);
             leaveApproval.setCourseid(courseid);
             leaveApproval.setLeavesubtime(new Date());
@@ -118,15 +118,16 @@ public class LeaveApprovalController {
     //教师查看请假列表
     @RequestMapping("/showleaveCourseByTeacherid")
     @ApiOperation(value = "showleaveCourseByTeacherid", notes = "教师查看请假列表")
-    public List<LeaveApproval> showleaveCourseByTeacherid(Integer teacherid){
-        return leaveapprovalService.showleaveCourseByTeacherid(teacherid);
+    public List<Map<String,Object>> showleaveCourseByTeacherid(Integer teacherid){
+        List<Map<String,Object>> leaveApprovals = leaveapprovalService.showleaveCourseByTeacherid(teacherid);
+        return leaveApprovals;
     }
-    //教师查看请假列表
+
     @RequestMapping("/agreeleaveCourseByTeacherid")
     @ApiOperation(value = "agreeleaveCourseByTeacherid", notes = "教师同意请假列表")
-    public JsonResult agreeleaveCourseByTeacherid(Integer teacherid,String ids){
+    public JsonResult agreeleaveCourseByTeacherid(Integer teacherid,String ids,String isAgree){
         List<Integer> idList = Arrays.asList(ids.split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
-        int agree = leaveapprovalService.agreeleaveCourseByTeacherid(teacherid, idList);
+        int agree = leaveapprovalService.agreeleaveCourseByTeacherid(teacherid, idList,Integer.parseInt(isAgree));
         JsonResult result = new JsonResult(ResultEnum.NORMAL.val(), "同意请假成功");
         result.setData(agree);
         return result;

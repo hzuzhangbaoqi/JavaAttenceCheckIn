@@ -257,10 +257,10 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-  <select id="showleaveCourseByTeacherid">
-    select l.* from course c,leaveapproval l where c.id = l.courseId
+  <select id="showleaveCourseByTeacherid" resultType="map">
+    select s.username,l.*,c.courseName,c.week,c.jieci from course c,leaveapproval l,student s where c.id = l.courseId and l.studentId=s.id
     <if test="teacherid!=null">
-      and teacherid = #{teacherid}
+      and c.teacherid = #{teacherid}
     </if>
   </select>
 

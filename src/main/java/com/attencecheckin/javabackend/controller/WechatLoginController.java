@@ -7,6 +7,7 @@ import com.attencecheckin.javabackend.common.enumer.ResultEnum;
 import com.attencecheckin.javabackend.config.WxMaConfiguration;
 import com.attencecheckin.javabackend.entity.Student;
 import com.attencecheckin.javabackend.entity.Teacher;
+import com.attencecheckin.javabackend.service.LoginInfoLogService;
 import com.attencecheckin.javabackend.service.StudentService;
 import com.attencecheckin.javabackend.service.TeacherService;
 import io.swagger.annotations.*;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,6 +41,8 @@ public class WechatLoginController {
     public StudentService studentService;
     @Autowired
     public TeacherService teacherService;
+    @Resource
+    private LoginInfoLogService logininfologService;
 
 
 

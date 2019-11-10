@@ -288,5 +288,4 @@
   <select id="getCourseByDate" resultType="map">
     select id ,concat('第',jieci,'节次：',courseName) as 'name'from course where week = #{week}
   </select>
-
 </mapper>

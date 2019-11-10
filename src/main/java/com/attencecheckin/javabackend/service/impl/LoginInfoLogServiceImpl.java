@@ -1,16 +1,20 @@
 package com.attencecheckin.javabackend.service.impl;
 
+import com.attencecheckin.javabackend.dao.ClassInfoMapper;
+import com.attencecheckin.javabackend.dao.StudentMapper;
+import com.attencecheckin.javabackend.dao.TeacherMapper;
+import com.attencecheckin.javabackend.entity.*;
 import com.attencecheckin.javabackend.service.LoginInfoLogService;
 import com.attencecheckin.javabackend.dao.LoginInfoLogMapper;
-import com.attencecheckin.javabackend.entity.LoginInfoLog;
-import com.attencecheckin.javabackend.entity.LoginInfoLogExample;
 import com.attencecheckin.javabackend.service.LoginInfoLogService;
+import com.attencecheckin.javabackend.service.StudentService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
-import java.util.List;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
 
 /**
 * @Description: LoginInfoLogService接口实现类
@@ -22,6 +26,13 @@ public class LoginInfoLogServiceImpl extends AbstractBaseServiceImpl<LoginInfoLo
 
     @Resource
     private LoginInfoLogMapper logininfologMapper;
+    @Resource
+    private StudentMapper studentMapper;
+    @Resource
+    private TeacherMapper teacherMapper;
+
+    @Resource
+    private ClassInfoMapper classinfoMapper;
     /*
     @Autowired
     public void setBaseDAO(LoginInfoLogMapper logininfologMapper) {
@@ -126,5 +137,28 @@ public class LoginInfoLogServiceImpl extends AbstractBaseServiceImpl<LoginInfoLo
         LoginInfoLogExample.Criteria criteria = example.createCriteria();
         criteria.andIdIn(Arrays.asList(ids));
         return logininfologMapper.deleteByExample(example);
+    }
+    public Map<String,Object> getStatistical(){
+        //学生
+        int studentCount = studentMapper.countByExample(new StudentExample());
+        //教师
+        int teacherCount = teacherMapper.countByExample(new TeacherExample());
+        //班级数
+        int classinfoCount = classinfoMapper.countByExample(new ClassInfoExample());
+
+        Map<String,Object> result = new HashMap<String,Object>();
+        result.put("studentCount",studentCount);
+        result.put("teacherCount",teacherCount);
+        result.put("classinfoCount",classinfoCount);
+        return  result;
+    }
+
+    public Map<String,Object> getLogininfoByWeek(){
+        List<Map<String, Object>> logininfoByWeek = logininfologMapper.getLogininfoByWeek();
+        Map<String,Object> result = new LinkedHashMap<String,Object>();
+        logininfoByWeek.forEach(item->{
+            result.put(""+item.get("logintime"), item.get("count"));
+        });
+        return result;
     }
 }

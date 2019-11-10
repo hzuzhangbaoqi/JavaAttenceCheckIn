@@ -15,8 +15,8 @@ import org.springframework.context.annotation.Configuration;
  * @create: 2019-05-21 17:08
  **/
 
-@Configuration
-@ConditionalOnClass({OSSClient.class})
+//@Configuration
+//@ConditionalOnClass({OSSClient.class})
 /*junits 测试的时候才需要用到*/
 /*@EnableConfigurationProperties(AliyunOssProperties.class)*/
 public class AliyunOssAutoConfigure {

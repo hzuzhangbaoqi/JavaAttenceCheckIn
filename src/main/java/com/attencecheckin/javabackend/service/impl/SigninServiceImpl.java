@@ -10,9 +10,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Description: SigninService接口实现类
@@ -168,6 +166,53 @@ public class SigninServiceImpl extends AbstractBaseServiceImpl<SignIn,Integer> i
         criteria.andStatusIn(status);
         criteria.andStudentidIn(users);
         return signInMapper.selectByExample(example);
+    }
+
+    public  List<Map<String,Object>>getAttendanceStatistics(String signtimeStart , String signtimeEnd, Integer studentid){
+        List<Map<String, Object>> attendanceStatistics = signInMapper.getAttendanceStatistics(signtimeStart, signtimeEnd, studentid);
+
+        Map<Integer,Map<String,Object>> map = new HashMap<Integer,Map<String,Object>>();
+        attendanceStatistics.forEach(item->{
+            Integer sid = (Integer) item.get("studentid");
+            Integer status = (Integer) item.get("status");
+            Long count = (Long) item.get("count");
+
+            if(null == map.get(sid)){
+                HashMap<String, Object> attendanceMap = new HashMap<>();
+                attendanceMap.put("studentid", sid);
+                attendanceMap.put("studentname", item.get("username"));
+                if(status==0){
+                    attendanceMap.put("notsignin", count);
+                }else if(status==1){
+                    attendanceMap.put("issignedin", count);
+                }else if(status==2){
+                    attendanceMap.put("leavesign", count);
+                }else if(status==3){
+                    attendanceMap.put("late", count);
+                }else if(status==4){
+                    attendanceMap.put("four", count);
+                }
+                map.put(sid, attendanceMap);
+            }else{
+                HashMap<String, Object> attendanceMap = (HashMap<String, Object>) map.get(sid);
+                if(status==0){
+                    attendanceMap.put("notsignin", count);
+                }else if(status==1){
+                    attendanceMap.put("issignedin", count);
+                }else if(status==2){
+                    attendanceMap.put("leavesign", count);
+                }else if(status==3){
+                    attendanceMap.put("late", count);
+                }else if(status==4){
+                    attendanceMap.put("four", count);
+                }
+            }
+        });
+
+        List<Map<String,Object>> resule = new ArrayList<Map<String,Object>>();
+        for(Map.Entry<Integer,Map<String,Object>> item : map.entrySet())
+            resule.add(item.getValue());
+        return resule;
     }
 
 }

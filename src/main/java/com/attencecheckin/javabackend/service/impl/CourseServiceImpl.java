@@ -1,17 +1,24 @@
 package com.attencecheckin.javabackend.service.impl;
 
+import com.attencecheckin.javabackend.controller.ClassRoomController;
+import com.attencecheckin.javabackend.controller.TeacherController;
+import com.attencecheckin.javabackend.dao.ClassInfoMapper;
 import com.attencecheckin.javabackend.dao.CourseMapper;
-import com.attencecheckin.javabackend.entity.Course;
-import com.attencecheckin.javabackend.entity.CourseExample;
+import com.attencecheckin.javabackend.entity.*;
+import com.attencecheckin.javabackend.service.ClassInfoService;
+import com.attencecheckin.javabackend.service.ClassRoomService;
 import com.attencecheckin.javabackend.service.CourseService;
+import com.attencecheckin.javabackend.service.TeacherService;
+import org.apache.commons.beanutils.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
 * @Description: CourseService接口实现类
@@ -23,11 +30,17 @@ public class CourseServiceImpl extends AbstractBaseServiceImpl<Course,Integer> i
 
     @Resource
     private CourseMapper courseMapper;
-    /*
-    @Autowired
+
+
+    @Resource
+    private ClassInfoService classinfoService;
+    @Resource
+    private ClassRoomService classRoomService;
+    @Resource
+    private TeacherService teacherService;
     public void setBaseDAO(CourseMapper courseMapper) {
         super.setBaseDAO(courseMapper);
-    }*/
+    }
 
     /**
      * 根据id获取对象
@@ -140,7 +153,51 @@ public class CourseServiceImpl extends AbstractBaseServiceImpl<Course,Integer> i
         }
         return courses.get(0);
     }
+    public Course getCourseByWeekAndJieci(Integer week,Integer jieci,Integer classid){
+        CourseExample example = new CourseExample();
+        CourseExample.Criteria criteria = example.createCriteria();
+        criteria.andWeekEqualTo(week);
+        criteria.andJieciEqualTo(jieci);
+        criteria.andClassidEqualTo(classid);
+        List<Course> courses = courseMapper.selectByExample(example);
+        if(courses.size()>0){
+            return courses.get(0);
+        }
+        return null;
+    }
     public List<Map<String,Object>> getCourseByDate(String e){
         return courseMapper.getCourseByDate(e);
+    }
+    public List<Map<String,Object>> getCourseByStudentid(Integer classid){
+        CourseExample courseExample = new CourseExample();
+        CourseExample.Criteria criteria = courseExample.createCriteria();
+        criteria.andClassidEqualTo(classid);
+        courseExample.setOrderByClause("week,jieci");
+        List<Course> courses = courseMapper.selectByExample(courseExample);
+        List<ClassInfo> classInfos = classinfoService.getAllList();
+        List<ClassRoom> classRooms = classRoomService.getAllList();
+        List<Teacher> teachers = teacherService.getAllList();
+
+        Map<Integer, ClassInfo> classInfoMap = classInfos.stream().collect(Collectors.toMap(ClassInfo::getId,Function.identity()));
+        Map<Integer, ClassRoom> classRoomMap = classRooms.stream().collect(Collectors.toMap(ClassRoom::getId,Function.identity()));
+        Map<Integer, Teacher> teacherMap = teachers.stream().collect(Collectors.toMap(Teacher::getId,Function.identity()));
+        List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+
+        courses.stream().forEach(course->{
+            try {
+                Map<String,Object> item = BeanUtils.describe(course);
+                item.put("classname", classInfoMap.get(course.getClassid())==null?"":classInfoMap.get(course.getClassid()).getClassname());
+                item.put("classroomname", classRoomMap.get(course.getClassroomid())==null?"":classRoomMap.get(course.getClassroomid()).getClassroomname());
+                item.put("teachername", teacherMap.get(course.getTeacherid())==null?"":teacherMap.get(course.getTeacherid()).getUsername());
+                result.add(item);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+        });
+        return result;
     }
 }

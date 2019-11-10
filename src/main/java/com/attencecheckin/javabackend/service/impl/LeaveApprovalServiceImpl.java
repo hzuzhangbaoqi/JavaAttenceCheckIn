@@ -139,16 +139,16 @@ public class LeaveApprovalServiceImpl extends AbstractBaseServiceImpl<LeaveAppro
         return leaveapprovalMapper.deleteByExample(example);
     }
 
-    public List<LeaveApproval> showleaveCourseByTeacherid(Integer teacherid){
+    public List<Map<String,Object>> showleaveCourseByTeacherid(Integer teacherid){
         return leaveapprovalMapper.showleaveCourseByTeacherid(teacherid);
     }
 
-    public int agreeleaveCourseByTeacherid(Integer teacher,List<Integer> ids){
+    public int agreeleaveCourseByTeacherid(Integer teacher,List<Integer> ids,Integer isAgree){
         LeaveApprovalExample example = new LeaveApprovalExample();
         LeaveApprovalExample.Criteria criteria = example.createCriteria();
         criteria.andIdIn(ids);
         LeaveApproval leaveApproval = new LeaveApproval();
-        leaveApproval.setStatus(1);
+        leaveApproval.setStatus(isAgree);
         return leaveapprovalMapper.updateByExampleSelective(leaveApproval, example);
     }
     public List<Map<String,Object>>  getCourseByStudent(Integer studentid,List<Integer> status){
