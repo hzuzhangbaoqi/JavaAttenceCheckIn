@@ -202,7 +202,10 @@ public class SignInController {
             return result;
         }
         Course course = courseService.getCourseByWeekAndJieci(Integer.parseInt(e), jieci, student.getClassid());
-
+        if(course==null){
+            result =  new JsonResult(ResultEnum.NOT_LOGIN.val(), "当前学生无课程");
+            return result;
+        }
         //查询是否开启了签到
         List<SignIn> signIns = signinService.selectSigninBycourseId(course.getId(), 2);
         if(signIns.size()>0){
@@ -260,11 +263,11 @@ public class SignInController {
 
     @RequestMapping("/getAbnormal")
     @ApiOperation(value = "getAbnormal", notes = "获取异常的签到")
-    public List<SignIn> getAbnormal(@RequestParam @ApiParam(name = "status", value = "状态，多个用,分割", required = true) String status,
+    public List<Map<String,Object>> getAbnormal(@RequestParam @ApiParam(name = "status", value = "状态，多个用,分割", required = true) String status,
                                           @RequestParam @ApiParam(name = "users", value = "用户users", required = true) String users) throws Exception {
         List<Integer> userList = Arrays.asList(users.split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
         List<Integer> statuList = Arrays.asList(status.split(",")).stream().map(s -> Integer.parseInt(s.trim())).collect(Collectors.toList());
-        List<SignIn> abnormal = signinService.getAbnormal(userList, statuList);
+        List<Map<String,Object>> abnormal = signinService.getAbnormal(userList, statuList);
         return abnormal;
     }
     @RequestMapping("/getAttendanceStatistics")

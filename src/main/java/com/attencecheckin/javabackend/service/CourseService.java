@@ -19,4 +19,5 @@ public interface CourseService extends BaseService<Course,Integer> {
     List<Map<String,Object>> getCourseByDate(String week);
     Course getCourseByWeekAndJieci(Integer week,Integer jieci,Integer classid);
     List<Map<String,Object>> getCourseByStudentid(Integer classid);
+    List<Map<String,Object>> getCourseByTeacherid(Integer teacherid);
 }

@@ -81,7 +81,7 @@
 
 
 
-        <table tableName="leaveapproval" domainObjectName="LeaveApproval"
+        <table tableName="signin" domainObjectName="SignIn"
                enableInsert = "true"
                enableSelectByPrimaryKey = "true"
                enableUpdateByPrimaryKey = "true"

@@ -200,4 +200,37 @@ public class CourseServiceImpl extends AbstractBaseServiceImpl<Course,Integer> i
         });
         return result;
     }
+    public List<Map<String,Object>> getCourseByTeacherid(Integer teacherid){
+        CourseExample courseExample = new CourseExample();
+        CourseExample.Criteria criteria = courseExample.createCriteria();
+        criteria.andTeacheridEqualTo(teacherid);
+        courseExample.setOrderByClause("week,jieci");
+        List<Course> courses = courseMapper.selectByExample(courseExample);
+        List<ClassInfo> classInfos = classinfoService.getAllList();
+        List<ClassRoom> classRooms = classRoomService.getAllList();
+        List<Teacher> teachers = teacherService.getAllList();
+
+        Map<Integer, ClassInfo> classInfoMap = classInfos.stream().collect(Collectors.toMap(ClassInfo::getId,Function.identity()));
+        Map<Integer, ClassRoom> classRoomMap = classRooms.stream().collect(Collectors.toMap(ClassRoom::getId,Function.identity()));
+        Map<Integer, Teacher> teacherMap = teachers.stream().collect(Collectors.toMap(Teacher::getId,Function.identity()));
+        List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+
+        courses.stream().forEach(course->{
+            try {
+                Map<String,Object> item = BeanUtils.describe(course);
+                item.put("classname", classInfoMap.get(course.getClassid())==null?"":classInfoMap.get(course.getClassid()).getClassname());
+                item.put("classroomname", classRoomMap.get(course.getClassroomid())==null?"":classRoomMap.get(course.getClassroomid()).getClassroomname());
+                item.put("teachername", teacherMap.get(course.getTeacherid())==null?"":teacherMap.get(course.getTeacherid()).getUsername());
+                result.add(item);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+        });
+        return result;
+    }
+
 }

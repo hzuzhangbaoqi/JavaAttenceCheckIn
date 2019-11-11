@@ -2,10 +2,13 @@
 package com.attencecheckin.javabackend.controller;
 
 import com.attencecheckin.javabackend.common.JsonResult;
+import com.attencecheckin.javabackend.common.enumer.ResultEnum;
 import com.attencecheckin.javabackend.entity.Course;
 import com.attencecheckin.javabackend.entity.Student;
+import com.attencecheckin.javabackend.entity.Teacher;
 import com.attencecheckin.javabackend.service.CourseService;
 import com.attencecheckin.javabackend.service.StudentService;
+import com.attencecheckin.javabackend.service.TeacherService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.*;
@@ -16,10 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
 * @Description: CourseController类
@@ -35,6 +35,8 @@ public class CourseController {
     private CourseService courseService;
     @Resource
     private StudentService studentService;
+    @Resource
+    private TeacherService teacherService;
 
     @RequestMapping("/insert")
     @ApiOperation(value = "insert", notes = "增加一条数据")
@@ -132,12 +134,55 @@ public class CourseController {
     }
     @RequestMapping("/getCourseByStudentid")
     @ApiOperation(value = "getCourseByStudentid", notes = "根据日期获取当天的课程")
-    public List<Map<String,Object>> getCourseByStudentid(String studentid) throws ParseException {
+    public JsonResult<Map<String,Object>> getCourseByStudentid(String studentid) throws ParseException {
         Student student = studentService.get(Integer.parseInt(studentid));
-        if(student == null||student.getClassid()==null){return new ArrayList<Map<String,Object>>();}
+        if(student == null||student.getClassid()==null){
+            JsonResult mapJsonResult = new JsonResult<>(ResultEnum.FAIL);
+            return mapJsonResult;
+        }
         List<Map<String, Object>> courseByDate = courseService.getCourseByStudentid(student.getClassid());
-        return courseByDate;
+
+        String[][] cycle = new String[][]{{"","","","","","",""},{"","","","","","",""},{"","","","","","",""},{"","","","","","",""},{"","","","","","",""}};
+        for(Map<String, Object> item : courseByDate){
+            Object jieci = item.get("jieci");
+            Object week =  item.get("week");
+            Object coursename = item.get("coursename");
+            System.out.println(""+(Integer.parseInt(jieci+"")-1) + "   " + (Integer.parseInt(week+"")-1) + ": "+String.valueOf(coursename));
+            cycle[Integer.parseInt(jieci+"")-1][Integer.parseInt(week+"")-1] = String.valueOf(coursename);
+        }
+        Map<String,Object> map = new HashMap<>();
+        map.put("cycle", cycle);
+        map.put("data", courseByDate);
+
+        JsonResult result = new JsonResult<>(ResultEnum.NORMAL.val(),"查询成功");
+        result.setData(map);
+        return result;
     }
+    @RequestMapping("/getCourseByTeacherid")
+    @ApiOperation(value = "getCourseByTeacherid", notes = "课程")
+    public JsonResult<Map<String,Object>> getCourseByTeacherid(String teacherid) throws ParseException {
+        Teacher teacher = teacherService.get(Integer.parseInt(teacherid));
+        if(teacher == null){JsonResult mapJsonResult = new JsonResult<>(ResultEnum.FAIL);
+            return mapJsonResult;}
+        List<Map<String, Object>> courseByDate = courseService.getCourseByTeacherid(teacher.getId());
+        String[][] cycle = new String[][]{{"","","","","","",""},{"","","","","","",""},{"","","","","","",""},{"","","","","","",""},{"","","","","","",""}};
+        for(Map<String, Object> item : courseByDate){
+            Object jieci = item.get("jieci");
+            Object week =  item.get("week");
+            Object coursename = item.get("coursename");
+            System.out.println(""+(Integer.parseInt(jieci+"")-1) + "   " + (Integer.parseInt(week+"")-1) + ": "+String.valueOf(coursename));
+            cycle[Integer.parseInt(jieci+"")-1][Integer.parseInt(week+"")-1] = String.valueOf(coursename);
+        }
+        Map<String,Object> map = new HashMap<>();
+        map.put("cycle", cycle);
+        map.put("data", courseByDate);
+
+        JsonResult result = new JsonResult<>(ResultEnum.NORMAL.val(),"查询成功");
+        result.setData(map);
+        return result;
+    }
+
+
 
 
 

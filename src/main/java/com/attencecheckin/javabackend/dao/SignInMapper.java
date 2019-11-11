@@ -32,4 +32,7 @@ public interface SignInMapper extends BaseDAO<SignIn,Integer> {
     int updateByPrimaryKey(SignIn record);
     List<SignIn> showSignin(@Param("courseid") Integer courseid,@Param("time")String time,@Param("signtype") Integer signtype);
     List<Map<String,Object>> getAttendanceStatistics(@Param("signtimeStart")String signtimeStart ,@Param("signtimeEnd")String signtimeEnd,@Param("studentid")Integer studentid);
+    List<Map<String,Object>> getAbnormal(@Param("studentids")List<Integer> studentids ,@Param("status")List<Integer> status);
+
+
 }

@@ -258,7 +258,7 @@
   </update>
 
   <select id="showleaveCourseByTeacherid" resultType="map">
-    select s.username,l.*,c.courseName,c.week,c.jieci from course c,leaveapproval l,student s where c.id = l.courseId and l.studentId=s.id
+    select s.username,l.*,c.courseName,c.week,c.jieci from course c,leaveapproval l,student s where c.id = l.courseId and l.studentId=s.id  and l.status=0
     <if test="teacherid!=null">
       and c.teacherid = #{teacherid}
     </if>

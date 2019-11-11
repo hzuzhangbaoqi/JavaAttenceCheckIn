@@ -269,4 +269,17 @@
       <if test="signtimeEnd!=null and signtimeEnd!=''">and si.signTime <![CDATA[ < ]]> str_to_date(#{signtimeEnd}, '%Y-%m-%d %H:%i:%s')</if>
       group by si.studentid,si.status
   </select>
+  <select id="getAbnormal" resultType="map">
+    select s.id, s.studentid,  DATE_FORMAT(s.signtime,'%Y-%m-%d %H:%i:%s') signtime, s.status, s.courseid, s.suslocationstatus, s.suslocation, s.signtype,c.coursename from signin s,course c
+    where s.courseid = c.id
+    and studentId in
+    <foreach close=")" collection="studentids" item="studentid" open="(" separator=",">
+      #{studentid}
+  </foreach>
+  <if test="status!=null and status.size>0">
+    and  status in <foreach close=")" collection="status" item="statu" open="(" separator=",">
+    #{statu}
+  </foreach>
+  </if>
+  </select>
 </mapper>

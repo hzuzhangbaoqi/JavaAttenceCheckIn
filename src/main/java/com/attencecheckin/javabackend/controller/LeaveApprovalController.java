@@ -104,12 +104,12 @@ public class LeaveApprovalController {
             leaveApproval.setCourseid(courseid);
             leaveApproval.setLeavesubtime(new Date());
             leaveApproval.setLeavedate(leavedate);
-            leaveapprovalService.save(leaveApproval);
             LeaveApproval byDateAndcourseid = leaveapprovalService.findByDateAndcourseid(studentId, leavedate, courseid);
             if(byDateAndcourseid!=null){
                 JsonResult<Object> result = new JsonResult<>(ResultEnum.FAIL,leavedate +"已经存在请假记录");
                 return result;
             }
+            leaveapprovalService.save(leaveApproval);
         }
         JsonResult<LeaveApproval> result = new JsonResult<>(ResultEnum.NORMAL.val(),"请假申请成功");
         return result;

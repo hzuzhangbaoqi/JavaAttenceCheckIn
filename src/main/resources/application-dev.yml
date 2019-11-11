@@ -1,6 +1,7 @@
 # 开发环境配置文件
 server:
-  port : 8887
+  port : 8888
+  servlet:
 aliyun:
   oss:
     endpoint : oss-ap-northeast-1.aliyuncs.com

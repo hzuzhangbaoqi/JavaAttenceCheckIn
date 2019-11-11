@@ -160,12 +160,8 @@ public class SigninServiceImpl extends AbstractBaseServiceImpl<SignIn,Integer> i
     public List<SignIn> showSignin(Integer courseid,String time,Integer signtype) throws DataAccessException {
         return signInMapper.showSignin(courseid,time,signtype);
     }
-    public List<SignIn> getAbnormal(List<Integer> users,List<Integer> status) throws DataAccessException {
-        SignInExample example = new SignInExample();
-        SignInExample.Criteria criteria = example.createCriteria();
-        criteria.andStatusIn(status);
-        criteria.andStudentidIn(users);
-        return signInMapper.selectByExample(example);
+    public List<Map<String,Object>> getAbnormal(List<Integer> users,List<Integer> status) throws DataAccessException {
+        return signInMapper.getAbnormal(users,status);
     }
 
     public  List<Map<String,Object>>getAttendanceStatistics(String signtimeStart , String signtimeEnd, Integer studentid){
