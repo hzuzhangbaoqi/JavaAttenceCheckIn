@@ -4,6 +4,7 @@ package com.attencecheckin.javabackend.controller;
 import com.attencecheckin.javabackend.common.JsonResult;
 import com.attencecheckin.javabackend.common.enumer.ResultEnum;
 import com.attencecheckin.javabackend.entity.Course;
+import com.attencecheckin.javabackend.entity.CourseExample;
 import com.attencecheckin.javabackend.entity.Student;
 import com.attencecheckin.javabackend.entity.Teacher;
 import com.attencecheckin.javabackend.service.CourseService;
@@ -109,11 +110,11 @@ public class CourseController {
      */
     @RequestMapping("/list")
     @ApiOperation(value = "list", notes = "批量查询")
-    public PageInfo<Course> list(@RequestParam(defaultValue = "0")@ApiParam(name = "page", value = "页数", required = true) Integer page,
-                                 @RequestParam(defaultValue = "0")@ApiParam(name = "size", value = "行数", required = true) Integer size) throws Exception {
+    public PageInfo<Map<String,Object>> list(@RequestParam(defaultValue = "0")@ApiParam(name = "page", value = "页数", required = true) Integer page,
+                                 @RequestParam(defaultValue = "100")@ApiParam(name = "size", value = "行数", required = true) Integer size) throws Exception {
         PageHelper.startPage(page, size);
-        List<Course> list = courseService.getAllList();
-        PageInfo<Course> pageInfo = new PageInfo<Course>(list);
+        List<Map<String,Object>> list = courseService.getListByExample(new CourseExample());
+        PageInfo<Map<String,Object>> pageInfo = new PageInfo<Map<String,Object>>(list);
         return pageInfo;
     }
     @RequestMapping("/getCourseByDate")

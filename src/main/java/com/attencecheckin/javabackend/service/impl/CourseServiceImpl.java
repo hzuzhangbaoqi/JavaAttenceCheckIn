@@ -1,5 +1,7 @@
 package com.attencecheckin.javabackend.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.attencecheckin.javabackend.controller.ClassRoomController;
 import com.attencecheckin.javabackend.controller.TeacherController;
 import com.attencecheckin.javabackend.dao.ClassInfoMapper;
@@ -142,9 +144,25 @@ public class CourseServiceImpl extends AbstractBaseServiceImpl<Course,Integer> i
         return courseMapper.deleteByExample(example);
     }
 
-    public List<Course>getListByExample(CourseExample example){
+    public List<Map<String,Object>> getListByExample(CourseExample example){
+        List<Course> courses = courseMapper.selectByExample(example);
+        List<ClassInfo> classInfos = classinfoService.getAllList();
+        List<ClassRoom> classRooms = classRoomService.getAllList();
+        List<Teacher> teachers = teacherService.getAllList();
 
-        return null;
+        Map<Integer, ClassInfo> classInfoMap = classInfos.stream().collect(Collectors.toMap(ClassInfo::getId,Function.identity()));
+        Map<Integer, ClassRoom> classRoomMap = classRooms.stream().collect(Collectors.toMap(ClassRoom::getId,Function.identity()));
+        Map<Integer, Teacher> teacherMap = teachers.stream().collect(Collectors.toMap(Teacher::getId,Function.identity()));
+        List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+
+        courses.stream().forEach(course->{
+                JSONObject item = JSONObject.parseObject(JSON.toJSONString(course));
+                item.put("classname", classInfoMap.get(course.getClassid())==null?"":classInfoMap.get(course.getClassid()).getClassname());
+                item.put("classroomname", classRoomMap.get(course.getClassroomid())==null?"":classRoomMap.get(course.getClassroomid()).getClassroomname());
+                item.put("teachername", teacherMap.get(course.getTeacherid())==null?"":teacherMap.get(course.getTeacherid()).getUsername());
+                result.add(item);
+        });
+        return result;
     }
     public Course getCourseByTeacheridAndTime(Integer teacherId,String time){
         List<Course> courses = courseMapper.selectCourseByTeacheridAndTime(teacherId,time);

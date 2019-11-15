@@ -130,6 +130,9 @@ public class LeaveApprovalController {
         int agree = leaveapprovalService.agreeleaveCourseByTeacherid(teacherid, idList,Integer.parseInt(isAgree));
         JsonResult result = new JsonResult(ResultEnum.NORMAL.val(), "同意请假成功");
         result.setData(agree);
+        //TODO 这里修改已经迟到的记录
+
+
         return result;
     }
     @RequestMapping("/getCourseByStudent")

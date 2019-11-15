@@ -105,7 +105,7 @@ public class SignInController {
             //查询是否开启了签到
             List<SignIn> signIns = signinService.selectSigninBycourseId(course.getId(), 2);
             if(signIns.size()>0){
-                result =  new JsonResult(ResultEnum.FAIL.val(), "已经开启签到成功，请勿重复开启");
+                result =  new JsonResult(ResultEnum.NORMAL.val(), "已经开启签到成功，请勿重复开启");
             }else{
                 try {
                     //记录开始签到记录
@@ -171,7 +171,10 @@ public class SignInController {
         //判断当前时间段
         String format = DateFormatUtils.format(date, "yyyy-MM-dd ");
         Integer jieci = null;
-        if(belongCalendar(date, DateUtils.parseDate(format+"08:00:00", new String[]{"yyyy-MM-dd hh:mm:ss"})
+        if(belongCalendar(date, DateUtils.parseDate(format+"00:00:00", new String[]{"yyyy-MM-dd hh:mm:ss"})
+                , DateUtils.parseDate(format+"07:45:00", new String[]{"yyyy-MM-dd hh:mm:ss"}))){
+            jieci = 0;
+        }else if(belongCalendar(date, DateUtils.parseDate(format+"08:00:00", new String[]{"yyyy-MM-dd hh:mm:ss"})
                 , DateUtils.parseDate(format+"09:45:00", new String[]{"yyyy-MM-dd hh:mm:ss"}))){
             jieci = 1;
         }else if(belongCalendar(date, DateUtils.parseDate(format+"10:00:00", new String[]{"yyyy-MM-dd hh:mm:ss"})

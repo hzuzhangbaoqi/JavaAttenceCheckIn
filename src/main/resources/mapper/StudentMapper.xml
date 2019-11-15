@@ -306,7 +306,7 @@
   </update>
 
   <select id="getStudentidsByCourse"   resultMap="BaseResultMap">
-    select s.* from student s,course c where c.id
+    select s.* from student s,course c where c.id in
     <foreach close=")" collection="courseids" item="courseid" open="(" separator=",">
       #{courseid}
     </foreach>

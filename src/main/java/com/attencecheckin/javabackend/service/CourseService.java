@@ -3,6 +3,7 @@ package com.attencecheckin.javabackend.service;
 
 import com.attencecheckin.javabackend.entity.Course;
 import com.attencecheckin.javabackend.entity.Course;
+import com.attencecheckin.javabackend.entity.CourseExample;
 
 import java.util.Date;
 import java.util.List;
@@ -20,4 +21,5 @@ public interface CourseService extends BaseService<Course,Integer> {
     Course getCourseByWeekAndJieci(Integer week,Integer jieci,Integer classid);
     List<Map<String,Object>> getCourseByStudentid(Integer classid);
     List<Map<String,Object>> getCourseByTeacherid(Integer teacherid);
+    List<Map<String,Object>> getListByExample(CourseExample example);
 }

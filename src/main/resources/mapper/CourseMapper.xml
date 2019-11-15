@@ -277,7 +277,7 @@
   <select id="selectCourseByTeacheridAndTime" resultMap="BaseResultMap">
 
     select 'true' as QUERYID, id, courseName, courseStartTime, courseEndTime, week, jieci, classId, classRoomId, teacherid from course WHERE
-    teacherid = '11'
+    teacherid = #{teacherid}
     and STR_TO_DATE(CONCAT(DATE_FORMAT(now(),'%Y-%m-%d '),DATE_FORMAT(courseStartTime,'%T') ),'%Y-%m-%d %H:%i:%s') <![CDATA[ <= ]]>
     STR_TO_DATE(CONCAT(DATE_FORMAT(now(),'%Y-%m-%d '),DATE_FORMAT(str_to_date(#{time}, '%Y-%m-%d %H:%i:%s'),'%T') ),'%Y-%m-%d %H:%i:%s')
     and STR_TO_DATE(CONCAT(DATE_FORMAT(now(),'%Y-%m-%d '),DATE_FORMAT(courseEndTime,'%T') ),'%Y-%m-%d %H:%i:%s') <![CDATA[ > ]]>
